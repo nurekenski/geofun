@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Әлем елдері</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+/* VOICE: жылы, көңілді, 3-сынып оқушысына арналған саяхат ойыны
+   IDEA: саяхатшының паспорты мен глобус — әр ел бір «мөр»
+   PICTURE: күлімдеген глобус кейіпкері, тестте ол қуанады/ойланады
+   COLOUR and TYPE: мұхит көгі, күн сарысы, маржан қызыл; Nunito 900 (тақырыптар) + Nunito 600 (мәтін): дөңгелек, анық кирилл әріптері; үш тіл: қаз/рус/eng
+   LAYOUT: жоғарыда екі үлкен бөлім-батырма, төменде карточкалар торы */
+:root{color-scheme:light dark;
+--bg:light-dark(#e9f6ff,#0c1d33);--ink:light-dark(#10264a,#eaf3ff);--soft:light-dark(#4c6286,#a9bfdf);
+--sea:light-dark(#1f7ae0,#3d93f5);--sea2:light-dark(#0f5bb5,#1c4f97);--sun:#ffc93c;--coral:#ff6b5a;
+--card:light-dark(#ffffff,#152b4a);--line:light-dark(#cfe3f7,#25426b);--ok:#20b46a;--bad:#ff5a4e}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:600 18px/1.5 Nunito,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Nunito,system-ui,sans-serif;font-weight:900;line-height:1.12;margin:0;text-wrap:balance}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:4px solid var(--sun);outline-offset:2px}
+.wrap{max-width:1240px;margin:0 auto;padding:0 max(4vw,14px)}
+header{background:linear-gradient(160deg,var(--sea),var(--sea2));color:#fff;padding:22px 0 0;position:relative;overflow:hidden}
+.top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center}
+header h1{font-size:clamp(36px,6vw,56px);font-weight:900}
+header p{margin:6px 0 0;font-size:18px;opacity:.95;max-width:34em}
+.hero-globe{width:clamp(96px,18vw,170px);height:auto;filter:drop-shadow(0 8px 0 rgba(0,0,0,.15))}
+.navrow{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px}
+nav{display:flex;gap:10px;flex-wrap:wrap}
+.langs{display:flex;gap:6px;background:rgba(255,255,255,.16);padding:6px;border-radius:22px;margin-bottom:10px}
+.langs button{border:0;border-radius:16px;min-width:72px;min-height:52px;padding:6px 12px;background:transparent;color:#fff;font-family:Nunito,system-ui,sans-serif;font-weight:700;font-size:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1;transition:transform .15s,background .15s}
+.langs button small{font-family:Nunito,sans-serif;font-size:12px;font-weight:600;opacity:.9;margin-top:3px}
+.langs button:hover{background:rgba(255,255,255,.18)}
+.langs button[aria-pressed=true]{background:var(--sun);color:#10264a;box-shadow:0 4px 0 rgba(0,0,0,.18);transform:translateY(-2px)}
+.gwrap{position:relative}
+.bubble{position:absolute;top:-4px;right:calc(100% - 18px);background:#fff;color:#10264a;font-family:Nunito,system-ui,sans-serif;font-weight:700;font-size:17px;padding:8px 14px;border-radius:18px 18px 4px 18px;white-space:nowrap;box-shadow:0 4px 0 rgba(0,0,0,.12)}
+.bubble.wave{animation:wave .6s}@keyframes wave{30%{transform:rotate(-8deg) scale(1.1)}60%{transform:rotate(5deg)}}
+nav button{font-size:19px;border:0;border-radius:18px 18px 0 0;padding:14px 24px;font-family:Nunito,system-ui,sans-serif;font-weight:700;font-size:19px;background:rgba(255,255,255,.18);color:#fff;min-height:54px}
+nav button[aria-selected=true]{background:var(--bg);color:var(--ink)}
+main{padding:24px 0 60px}
+.hidden{display:none!important}
+/* Елдер тізімі */
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
+.search{flex:1 1 260px;font-size:18px;padding:12px 16px;border-radius:14px;border:3px solid var(--line);background:var(--card);color:var(--ink);min-height:52px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chip{border:3px solid var(--line);background:var(--card);border-radius:999px;padding:8px 16px;font-weight:700;font-size:16px;min-height:46px}
+.chip[aria-pressed=true]{background:var(--sun);border-color:var(--sun);color:#10264a}
+.count{color:var(--soft);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(150px,44%),1fr));gap:14px}
+.cc{background:var(--card);border:3px solid var(--line);border-radius:18px;padding:12px;text-align:center;transition:transform .15s}
+.cc:hover{transform:translateY(-3px);border-color:var(--sea)}
+.cc .flag{margin:0 auto 10px}
+.cc b{display:block;font-size:17px;line-height:1.2}
+.cc span{display:block;color:var(--soft);font-size:15px;margin-top:4px}
+.flag{display:block;width:100%;max-width:150px;aspect-ratio:4/3;border-radius:8px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.12),0 3px 0 rgba(0,0,0,.08);background:var(--line);display:grid;place-items:center;line-height:1.2;color:var(--soft);font-size:13px;text-align:center;padding:0}
+.flag:empty{background:linear-gradient(90deg,var(--line),var(--card),var(--line));background-size:200% 100%;animation:shim 1.2s linear infinite}@keyframes shim{to{background-position:-200% 0}}
+.note{margin:14px 0 0;background:var(--bg);border-radius:14px;padding:10px 14px;font-size:16px;text-align:left}
+.fstat{background:var(--sun);color:#10264a;font-weight:700;border-radius:14px;padding:12px 16px;margin-bottom:16px}.fstat.err{background:var(--bad);color:#fff}
+footer a{color:inherit}
+.flag svg{width:100%;height:100%;display:block}
+.empty{padding:40px;text-align:center;color:var(--soft);font-size:19px}
+/* Модаль */
+.modal{position:fixed;inset:0;background:rgba(5,20,45,.6);display:grid;place-items:center;padding:16px;z-index:20}
+.box{background:var(--card);border-radius:24px;padding:24px;max-width:460px;width:100%;text-align:center;position:relative}
+.box .flag{max-width:320px;margin:0 auto 18px;font-size:120px}
+.box h2{font-size:clamp(28px,6vw,40px)}
+.box .cap{font-size:20px;margin-top:10px}.box .cap b{color:var(--sea)}
+.box .cont{display:inline-block;margin-top:12px;background:var(--bg);padding:6px 14px;border-radius:999px;font-weight:700;color:var(--soft)}
+.x{position:absolute;top:10px;right:10px;width:46px;height:46px;border-radius:50%;border:0;background:var(--bg);font-size:24px;font-weight:700}
+/* Тест */
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:18px}
+.mode{border:0;border-radius:24px;padding:24px;text-align:left;color:#10264a;display:grid;gap:10px;box-shadow:0 6px 0 rgba(0,0,0,.15);transition:transform .15s}
+.mode:hover{transform:translateY(-4px)}
+.mode h2{font-size:clamp(23px,3.4vw,30px);font-weight:900}
+.mode p{margin:0;font-size:17px}
+.m1{background:var(--sun)}.m2{background:#8fe3b6}
+.demo{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.demo i{font-style:normal;background:#fff;border-radius:10px;padding:6px 10px;font-weight:700}
+.who{display:grid;gap:8px;max-width:520px}.who .set{margin-top:4px}.name{font-size:20px;font-weight:700}.name.bad{border-color:var(--bad);animation:shake .4s}
+.perr{color:var(--bad);font-weight:700}
+.lbbox{margin-top:30px;background:var(--card);border:3px solid var(--line);border-radius:24px;padding:clamp(16px,3vw,26px)}
+.lbhead{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.lbhead h2{font-size:clamp(24px,4vw,32px)}
+.lb{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px;width:100%;text-align:left}
+.lb li{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;gap:12px;align-items:center;background:var(--bg);border-radius:14px;padding:8px 14px;font-size:18px}
+.lb li.me{outline:3px solid var(--coral)}
+.lb .rk{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-family:Nunito,system-ui,sans-serif;font-weight:700;background:var(--line)}
+.lb .r1{background:#ffc93c;color:#10264a}.lb .r2{background:#c9d3de;color:#10264a}.lb .r3{background:#e0a26a;color:#10264a}
+.lb b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lb li:only-child b{white-space:normal}
+.lb .of{color:var(--soft);font-weight:700;white-space:nowrap}
+.lb strong{font-family:Nunito,system-ui,sans-serif;font-size:22px;color:var(--sea);white-space:nowrap}
+.lbnote{color:var(--soft);font-size:14px;margin:12px 0 0}
+.rank{font-size:22px;font-weight:700;background:var(--sun);color:#10264a;border-radius:16px;padding:10px 18px}
+@media(max-width:600px){.lb li{grid-template-columns:38px minmax(0,1fr) auto;font-size:16px;padding:8px 10px}.lb .of{display:none}}
+.set{display:block;margin:22px 0 10px;font-family:Nunito,system-ui,sans-serif;font-weight:700;font-size:20px}
+.qbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.prog{flex:1 1 200px;height:18px;background:var(--line);border-radius:999px;overflow:hidden}
+.prog div{height:100%;background:linear-gradient(90deg,var(--sun),var(--coral));border-radius:999px;transition:width .3s}
+.pill{background:var(--card);border:3px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:700;white-space:nowrap}
+.stage{background:var(--card);border:3px solid var(--line);border-radius:26px;padding:clamp(16px,3vw,30px);display:grid;gap:18px}
+.ask{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px;align-items:center}
+.ask svg.mascot{width:clamp(64px,12vw,100px);height:auto}
+.ask .lbl{color:var(--soft);font-weight:700;font-size:17px}
+.ask h2{font-size:clamp(28px,6vw,48px);color:var(--sea)}
+.bigflag{max-width:min(360px,100%);margin:0 auto;font-size:140px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.opt{position:relative;border:4px solid var(--line);background:var(--bg);border-radius:20px;padding:12px 12px 12px 58px;text-align:left;font-weight:700;font-size:clamp(17px,2.4vw,22px);min-height:72px;display:flex;align-items:center;transition:transform .12s,border-color .12s}
+.opt:hover:not(:disabled){border-color:var(--sea);transform:translateY(-2px)}
+.opt .let{position:absolute;left:10px;top:50%;translate:0 -50%;width:38px;height:38px;border-radius:12px;background:var(--sea);color:#fff;display:grid;place-items:center;font-family:Nunito,system-ui,sans-serif}
+.opt.fl{padding:46px 12px 12px;justify-content:center}
+.opt.fl .let{top:8px;translate:0 0}
+.opt.fl .flag{max-width:220px;font-size:80px}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--card))}
+.opt.ok .let{background:var(--ok)}
+.opt.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 15%,var(--card));animation:shake .4s}
+.opt.no .let{background:var(--bad)}
+.opt:disabled{cursor:default}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.fb{min-height:54px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-weight:700;font-size:20px}
+.fb .good{color:var(--ok)}.fb .oops{color:var(--bad)}
+.btn{border:0;border-radius:16px;padding:12px 24px;background:var(--coral);color:#fff;font-weight:700;font-size:19px;min-height:52px;box-shadow:0 4px 0 rgba(0,0,0,.18)}
+.btn.alt{background:var(--card);color:var(--ink);border:3px solid var(--line);box-shadow:none}
+.end{text-align:center;display:grid;gap:14px;justify-items:center}
+.stars{font-size:clamp(48px,10vw,72px);letter-spacing:8px;color:var(--sun);line-height:1}
+.stars .off{color:var(--line)}
+.end h2{font-size:clamp(30px,6vw,46px)}
+.review{width:100%;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:10px;text-align:left}
+.rv{display:grid;grid-template-columns:64px minmax(0,1fr);gap:10px;align-items:center;background:var(--bg);border-radius:14px;padding:8px}
+.rv .flag{font-size:36px}
+.rv span{color:var(--soft);font-size:15px;display:block}
+.conf{position:fixed;top:-20px;width:12px;height:16px;border-radius:3px;z-index:30;pointer-events:none;animation:fall 1.4s ease-in forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(540deg);opacity:.6}}
+.pop{animation:pop .5s}@keyframes pop{40%{transform:scale(1.12)}}
+footer{color:var(--soft);font-size:14px;text-align:center;padding:0 0 30px}
+@media(max-width:600px){.top{grid-template-columns:minmax(0,1fr) 84px}.navrow{flex-direction:column-reverse;align-items:stretch}nav{width:100%}.langs{margin:0;justify-content:center}.langs button{flex:1}.bubble{font-size:13px;padding:5px 10px;top:auto;bottom:-8px;right:50%;translate:50% 0;border-radius:14px}nav button{font-size:19px;flex:1;padding:12px 10px;font-size:17px}.opt{min-height:64px;padding-left:52px}.opt .let{width:34px;height:34px}.opt.fl{padding:42px 8px 8px}.ask{grid-template-columns:minmax(0,1fr)}.ask svg.mascot{display:none}.qbar .pill{font-size:15px}}
+@media(max-width:360px){.opts{gap:8px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+ <symbol id="globe" viewBox="0 0 200 200">
+  <ellipse cx="100" cy="188" rx="58" ry="8" fill="rgba(0,0,0,.18)"/>
+  <circle cx="100" cy="96" r="82" fill="#2f8cf0"/>
+  <path d="M40 60c18-18 40-14 46-2s-8 20 4 30 26 0 28 14-14 22-30 20-30-14-40-30-20-22-8-32z" fill="#5fd38d"/>
+  <path d="M128 34c16 4 30 18 34 34-10 2-18-6-26-4s-12 12-22 8 4-22 14-38z" fill="#5fd38d"/>
+  <path d="M120 130c14-6 30 0 32 10s-12 22-24 22-20-26-8-32z" fill="#5fd38d"/>
+  <circle cx="100" cy="96" r="82" fill="none" stroke="#0f5bb5" stroke-width="6"/>
+  <path d="M38 70a72 72 0 0 1 40-46" stroke="#fff" stroke-width="8" stroke-linecap="round" fill="none" opacity=".45"/>
+  <circle cx="76" cy="92" r="10" fill="#10264a"/><circle cx="124" cy="92" r="10" fill="#10264a"/>
+  <circle cx="79" cy="88" r="3.5" fill="#fff"/><circle cx="127" cy="88" r="3.5" fill="#fff"/>
+  <circle cx="62" cy="112" r="9" fill="#ff8a7a" opacity=".7"/><circle cx="138" cy="112" r="9" fill="#ff8a7a" opacity=".7"/>
+  <path d="M82 118q18 18 36 0" stroke="#10264a" stroke-width="7" stroke-linecap="round" fill="none"/>
+ </symbol>
+</svg>
+
+<header>
+ <div class="wrap">
+  <div class="top">
+   <div>
+    <h1 data-t="title">Әлем елдері</h1>
+    <p><span data-t="sub1"></span><br><span data-t="sub2"></span></p>
+   </div>
+   <div class="gwrap">
+    <div class="bubble" data-t="hello">Сәлем!</div>
+    <svg class="hero-globe" viewBox="0 0 200 200" role="img" data-ta="globe"><use href="#globe"/></svg>
+   </div>
+  </div>
+  <div class="navrow">
+   <nav role="tablist">
+    <button role="tab" id="tab-list" aria-selected="true" data-t="tabList">Елдер</button>
+    <button role="tab" id="tab-quiz" aria-selected="false" data-t="tabQuiz">Тест ойыны</button>
+   </nav>
+   <div class="langs" role="group" aria-label="Тіл / Язык / Language">
+    <button data-lang="kk" lang="kk" aria-pressed="true">Қаз<small>қазақша</small></button>
+    <button data-lang="ru" lang="ru" aria-pressed="false">Рус<small>русский</small></button>
+    <button data-lang="en" lang="en" aria-pressed="false">Eng<small>English</small></button>
+   </div>
+  </div>
+ </div>
+</header>
+
+<main class="wrap">
+ <div class="fstat" id="fstat" role="status"></div>
+ <section id="view-list">
+  <div class="tools">
+   <input id="q" class="search" type="search" data-tp="search" data-ta="searchA">
+   <span class="count" id="cnt"></span>
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="grid" id="grid"></div>
+ </section>
+
+ <section id="view-quiz" class="hidden">
+  <div id="q-start">
+   <div class="who">
+    <label for="pname" class="set" data-t="s1"></label>
+    <input id="pname" class="search name" maxlength="30" data-tp="namePh" autocomplete="off" enterkeyhint="done">
+    <div id="perr" class="perr hidden" role="alert" data-t="perr"></div>
+   </div>
+   <div class="set" data-t="s2"></div>
+   <div class="chips" id="qchips"></div>
+   <div class="set" data-t="s3"></div>
+   <div class="chips" id="qnum"></div>
+   <div class="set" data-t="s4"></div>
+   <div class="modes">
+    <button class="mode m1" data-mode="1">
+     <h2 data-t="m1"></h2>
+     <p data-t="m1d"></p>
+     <div class="demo"><i data-t="m1ex"></i> → <i>A</i><i>B</i><i>C</i><i>D</i> <span data-t="flags"></span></div>
+    </button>
+    <button class="mode m2" data-mode="2">
+     <h2 data-t="m2"></h2>
+     <p data-t="m2d"></p>
+     <div class="demo"><i data-t="flag1"></i> → <i>A</i><i>B</i><i>C</i><i>D</i> <span data-t="countries"></span></div>
+    </button>
+   </div>
+   <div class="lbbox">
+    <div class="lbhead"><h2 data-t="lbTitle"></h2>
+     <div class="chips" id="lbtabs" style="margin:0"><button class="chip" data-m="1" aria-pressed="true" data-t="lb1"></button><button class="chip" data-m="2" aria-pressed="false" data-t="lb2"></button></div>
+    </div>
+    <ol class="lb" id="lb"></ol>
+    <p class="lbnote"><span data-t="lbNote"></span> <span id="lbwhere"></span><br>
+     <button class="chip" id="lbclear" style="min-height:40px;margin-top:8px"></button></p>
+   </div>
+  </div>
+
+  <div id="q-play" class="hidden">
+   <div class="qbar">
+    <span class="pill" id="pn"></span>
+    <span class="pill" id="qn"></span>
+    <div class="prog"><div id="pg"></div></div>
+    <span class="pill" id="sc"></span>
+    <span class="pill" id="st"></span>
+    <button class="btn alt" id="quit" data-t="quit"></button>
+   </div>
+   <div class="stage">
+    <div class="ask">
+     <svg class="mascot" viewBox="0 0 200 200" aria-hidden="true"><use href="#globe"/></svg>
+     <div id="prompt"></div>
+    </div>
+    <div class="opts" id="opts"></div>
+    <div class="fb"><span id="msg"></span><button class="btn hidden" id="next" data-t="next"></button></div>
+   </div>
+  </div>
+
+  <div id="q-end" class="stage end hidden"></div>
+ </section>
+</main>
+<footer class="wrap"><span data-t="foot1"></span><br><span data-t="foot2"></span></footer>
+
+<div class="modal hidden" id="modal" role="dialog" aria-modal="true"><div class="box" id="mbox"></div></div>
+
+<script>
+{
+const RAW=`as|AF|Ауғанстан|Кабул
+as|AM|Армения|Ереван
+as|AZ|Әзірбайжан|Баку
+as|BH|Бахрейн|Манама
+as|BD|Бангладеш|Дакка
+as|BT|Бутан|Тхимпху
+as|BN|Бруней|Бандар-Сери-Бегаван
+as|KH|Камбоджа|Пномпень
+as|CN|Қытай|Бейжің
+as|CY|Кипр|Никосия
+as|GE|Грузия|Тбилиси
+as|IN|Үндістан|Нью-Дели
+as|ID|Индонезия|Джакарта|Жаңа астана Нусантара салынып жатыр, бірақ заң бойынша әзірге астана — Джакарта.
+as|IR|Иран|Тегеран
+as|IQ|Ирак|Бағдат
+as|IL|Израиль|Иерусалим|Израиль астанасы деп Иерусалимді жариялаған, бірақ көптеген елдердің елшілігі Тель-Авивте орналасқан.
+as|JP|Жапония|Токио
+as|JO|Иордания|Амман
+as|KZ|Қазақстан|Астана
+as|KW|Кувейт|Эль-Кувейт
+as|KG|Қырғызстан|Бішкек
+as|LA|Лаос|Вьентьян
+as|LB|Ливан|Бейрут
+as|MY|Малайзия|Куала-Лумпур|Үкімет Путраджая қаласында орналасқан.
+as|MV|Мальдив аралдары|Мале
+as|MN|Моңғолия|Ұлан-Батыр
+as|MM|Мьянма|Нейпьидо
+as|NP|Непал|Катманду
+as|KP|Солтүстік Корея|Пхеньян
+as|OM|Оман|Маскат
+as|PK|Пәкістан|Исламабад
+as|PS|Палестина|Шығыс Иерусалим|Палестина астанасы деп Шығыс Иерусалимді жариялаған. Үкімет Рамалла қаласында отырады.
+as|PH|Филиппин|Манила
+as|QA|Катар|Доха
+as|SA|Сауд Арабиясы|Эр-Рияд
+as|SG|Сингапур|Сингапур
+as|KR|Оңтүстік Корея|Сеул
+as|LK|Шри-Ланка|Шри-Джаяварденепура-Котте|Ең үлкен қаласы — Коломбо.
+as|SY|Сирия|Дамаск
+as|TJ|Тәжікстан|Душанбе
+as|TH|Тайланд|Бангкок
+as|TL|Шығыс Тимор|Дили
+as|TR|Түркия|Анкара
+as|TM|Түрікменстан|Ашхабад
+as|AE|Біріккен Араб Әмірліктері|Әбу-Даби
+as|UZ|Өзбекстан|Ташкент
+as|VN|Вьетнам|Ханой
+as|YE|Йемен|Сана
+eu|AL|Албания|Тирана
+eu|AD|Андорра|Андорра-ла-Велья
+eu|AT|Австрия|Вена
+eu|BY|Беларусь|Минск
+eu|BE|Бельгия|Брюссель
+eu|BA|Босния және Герцеговина|Сараево
+eu|BG|Болгария|София
+eu|HR|Хорватия|Загреб
+eu|CZ|Чехия|Прага
+eu|DK|Дания|Копенгаген
+eu|EE|Эстония|Таллин
+eu|FI|Финляндия|Хельсинки
+eu|FR|Франция|Париж
+eu|DE|Германия|Берлин
+eu|GR|Грекия|Афина
+eu|HU|Венгрия|Будапешт
+eu|IS|Исландия|Рейкьявик
+eu|IE|Ирландия|Дублин
+eu|IT|Италия|Рим
+eu|LV|Латвия|Рига
+eu|LI|Лихтенштейн|Вадуц
+eu|LT|Литва|Вильнюс
+eu|LU|Люксембург|Люксембург
+eu|MT|Мальта|Валлетта
+eu|MD|Молдова|Кишинев
+eu|MC|Монако|Монако
+eu|ME|Черногория|Подгорица
+eu|NL|Нидерланд|Амстердам|Үкімет пен парламент Гаага қаласында орналасқан.
+eu|MK|Солтүстік Македония|Скопье
+eu|NO|Норвегия|Осло
+eu|PL|Польша|Варшава
+eu|PT|Португалия|Лиссабон
+eu|RO|Румыния|Бухарест
+eu|RU|Ресей|Мәскеу
+eu|SM|Сан-Марино|Сан-Марино
+eu|RS|Сербия|Белград
+eu|SK|Словакия|Братислава
+eu|SI|Словения|Любляна
+eu|ES|Испания|Мадрид
+eu|SE|Швеция|Стокгольм
+eu|CH|Швейцария|Берн|Заңда «астана» сөзі жоқ, Берн — «федералдық қала» деп аталады.
+eu|UA|Украина|Киев
+eu|GB|Ұлыбритания|Лондон
+eu|VA|Ватикан|Ватикан
+af|DZ|Алжир|Алжир
+af|AO|Ангола|Луанда
+af|BJ|Бенин|Порто-Ново|Үкімет Котону қаласында отырады.
+af|BW|Ботсвана|Габороне
+af|BF|Буркина-Фасо|Уагадугу
+af|BI|Бурунди|Гитега
+af|CV|Кабо-Верде|Прая
+af|CM|Камерун|Яунде
+af|CF|Орталық Африка Республикасы|Банги
+af|TD|Чад|Нджамена
+af|KM|Комор аралдары|Морони
+af|CG|Конго Республикасы|Браззавиль
+af|CD|Конго Демократиялық Республикасы|Киншаса
+af|CI|Кот-д'Ивуар|Ямусукро|Ең үлкен қаласы — Абиджан.
+af|DJ|Джибути|Джибути
+af|EG|Египет|Каир
+af|GQ|Экваторлық Гвинея|Сьюдад-де-ла-Пас|2026 жылғы 2 қаңтардағы президент жарлығымен астана болды. Бұрынғы астанасы — Малабо.
+af|ER|Эритрея|Асмэра
+af|SZ|Эсватини|Мбабане|Парламент Лобамба қаласында орналасқан.
+af|ET|Эфиопия|Аддис-Абеба
+af|GA|Габон|Либревиль
+af|GM|Гамбия|Банжул
+af|GH|Гана|Аккра
+af|GN|Гвинея|Конакри
+af|GW|Гвинея-Бисау|Бисау
+af|KE|Кения|Найроби
+af|LS|Лесото|Масеру
+af|LR|Либерия|Монровия
+af|LY|Ливия|Триполи
+af|MG|Мадагаскар|Антананариву
+af|MW|Малави|Лилонгве
+af|ML|Мали|Бамако
+af|MR|Мавритания|Нуакшот
+af|MU|Маврикий|Порт-Луи
+af|MA|Марокко|Рабат
+af|MZ|Мозамбик|Мапуту
+af|NA|Намибия|Виндхук
+af|NE|Нигер|Ниамей
+af|NG|Нигерия|Абуджа
+af|RW|Руанда|Кигали
+af|ST|Сан-Томе және Принсипи|Сан-Томе
+af|SN|Сенегал|Дакар
+af|SC|Сейшел аралдары|Виктория
+af|SL|Сьерра-Леоне|Фритаун
+af|SO|Сомали|Могадишо
+af|ZA|Оңтүстік Африка Республикасы|Претория|Елдің үш астанасы бар: Претория (үкімет), Кейптаун (парламент), Блумфонтейн (жоғарғы сот).
+af|SS|Оңтүстік Судан|Джуба
+af|SD|Судан|Хартум
+af|TZ|Танзания|Додома|Ең үлкен қаласы — Дар-эс-Салам.
+af|TG|Того|Ломе
+af|TN|Тунис|Тунис
+af|UG|Уганда|Кампала
+af|ZM|Замбия|Лусака
+af|ZW|Зимбабве|Хараре
+na|AG|Антигуа және Барбуда|Сент-Джонс
+na|BS|Багам аралдары|Нассау
+na|BB|Барбадос|Бриджтаун
+na|BZ|Белиз|Бельмопан
+na|CA|Канада|Оттава
+na|CR|Коста-Рика|Сан-Хосе
+na|CU|Куба|Гавана
+na|DM|Доминика|Розо
+na|DO|Доминикан Республикасы|Санто-Доминго
+na|SV|Сальвадор|Сан-Сальвадор
+na|GD|Гренада|Сент-Джорджес
+na|GT|Гватемала|Гватемала
+na|HT|Гаити|Порт-о-Пренс
+na|HN|Гондурас|Тегусигальпа
+na|JM|Ямайка|Кингстон
+na|MX|Мексика|Мехико
+na|NI|Никарагуа|Манагуа
+na|PA|Панама|Панама
+na|KN|Сент-Китс және Невис|Бастер
+na|LC|Сент-Люсия|Кастри
+na|VC|Сент-Винсент және Гренадиндер|Кингстаун
+na|TT|Тринидад және Тобаго|Порт-оф-Спейн
+na|US|Америка Құрама Штаттары|Вашингтон
+sa|AR|Аргентина|Буэнос-Айрес
+sa|BO|Боливия|Сукре|Конституция бойынша астана — Сукре. Үкімет пен парламент Ла-Пас қаласында отырады.
+sa|BR|Бразилия|Бразилиа
+sa|CL|Чили|Сантьяго
+sa|CO|Колумбия|Богота
+sa|EC|Эквадор|Кито
+sa|GY|Гайана|Джорджтаун
+sa|PY|Парагвай|Асунсьон
+sa|PE|Перу|Лима
+sa|SR|Суринам|Парамарибо
+sa|UY|Уругвай|Монтевидео
+sa|VE|Венесуэла|Каракас
+oc|AU|Аустралия|Канберра
+oc|FJ|Фиджи|Сува
+oc|KI|Кирибати|Тарава
+oc|MH|Маршалл аралдары|Маджуро
+oc|FM|Микронезия|Паликир
+oc|NR|Науру|Ярен|Науруда ресми астана жоқ, үкімет Ярен ауданында орналасқан.
+oc|NZ|Жаңа Зеландия|Веллингтон
+oc|PW|Палау|Нгерулмуд
+oc|PG|Папуа — Жаңа Гвинея|Порт-Морсби
+oc|WS|Самоа|Апиа
+oc|SB|Соломон аралдары|Хониара
+oc|TO|Тонга|Нукуалофа
+oc|TV|Тувалу|Фунафути
+oc|VU|Вануату|Порт-Вила`;
+const RUEN=`AF|Афганистан|Кабул|Afghanistan|Kabul
+AM|Армения|Ереван|Armenia|Yerevan
+AZ|Азербайджан|Баку|Azerbaijan|Baku
+BH|Бахрейн|Манама|Bahrain|Manama
+BD|Бангладеш|Дакка|Bangladesh|Dhaka
+BT|Бутан|Тхимпху|Bhutan|Thimphu
+BN|Бруней|Бандар-Сери-Бегаван|Brunei|Bandar Seri Begawan
+KH|Камбоджа|Пномпень|Cambodia|Phnom Penh
+CN|Китай|Пекин|China|Beijing
+CY|Кипр|Никосия|Cyprus|Nicosia
+GE|Грузия|Тбилиси|Georgia|Tbilisi
+IN|Индия|Нью-Дели|India|New Delhi
+ID|Индонезия|Джакарта|Indonesia|Jakarta
+IR|Иран|Тегеран|Iran|Tehran
+IQ|Ирак|Багдад|Iraq|Baghdad
+IL|Израиль|Иерусалим|Israel|Jerusalem
+JP|Япония|Токио|Japan|Tokyo
+JO|Иордания|Амман|Jordan|Amman
+KZ|Казахстан|Астана|Kazakhstan|Astana
+KW|Кувейт|Эль-Кувейт|Kuwait|Kuwait City
+KG|Кыргызстан|Бишкек|Kyrgyzstan|Bishkek
+LA|Лаос|Вьентьян|Laos|Vientiane
+LB|Ливан|Бейрут|Lebanon|Beirut
+MY|Малайзия|Куала-Лумпур|Malaysia|Kuala Lumpur
+MV|Мальдивы|Мале|Maldives|Malé
+MN|Монголия|Улан-Батор|Mongolia|Ulaanbaatar
+MM|Мьянма|Нейпьидо|Myanmar|Naypyidaw
+NP|Непал|Катманду|Nepal|Kathmandu
+KP|Северная Корея|Пхеньян|North Korea|Pyongyang
+OM|Оман|Маскат|Oman|Muscat
+PK|Пакистан|Исламабад|Pakistan|Islamabad
+PS|Палестина|Восточный Иерусалим|Palestine|East Jerusalem
+PH|Филиппины|Манила|Philippines|Manila
+QA|Катар|Доха|Qatar|Doha
+SA|Саудовская Аравия|Эр-Рияд|Saudi Arabia|Riyadh
+SG|Сингапур|Сингапур|Singapore|Singapore
+KR|Южная Корея|Сеул|South Korea|Seoul
+LK|Шри-Ланка|Шри-Джаяварденепура-Котте|Sri Lanka|Sri Jayawardenepura Kotte
+SY|Сирия|Дамаск|Syria|Damascus
+TJ|Таджикистан|Душанбе|Tajikistan|Dushanbe
+TH|Таиланд|Бангкок|Thailand|Bangkok
+TL|Восточный Тимор|Дили|East Timor|Dili
+TR|Турция|Анкара|Türkiye|Ankara
+TM|Туркменистан|Ашхабад|Turkmenistan|Ashgabat
+AE|Объединённые Арабские Эмираты|Абу-Даби|United Arab Emirates|Abu Dhabi
+UZ|Узбекистан|Ташкент|Uzbekistan|Tashkent
+VN|Вьетнам|Ханой|Vietnam|Hanoi
+YE|Йемен|Сана|Yemen|Sanaa
+AL|Албания|Тирана|Albania|Tirana
+AD|Андорра|Андорра-ла-Велья|Andorra|Andorra la Vella
+AT|Австрия|Вена|Austria|Vienna
+BY|Беларусь|Минск|Belarus|Minsk
+BE|Бельгия|Брюссель|Belgium|Brussels
+BA|Босния и Герцеговина|Сараево|Bosnia and Herzegovina|Sarajevo
+BG|Болгария|София|Bulgaria|Sofia
+HR|Хорватия|Загреб|Croatia|Zagreb
+CZ|Чехия|Прага|Czechia|Prague
+DK|Дания|Копенгаген|Denmark|Copenhagen
+EE|Эстония|Таллин|Estonia|Tallinn
+FI|Финляндия|Хельсинки|Finland|Helsinki
+FR|Франция|Париж|France|Paris
+DE|Германия|Берлин|Germany|Berlin
+GR|Греция|Афины|Greece|Athens
+HU|Венгрия|Будапешт|Hungary|Budapest
+IS|Исландия|Рейкьявик|Iceland|Reykjavík
+IE|Ирландия|Дублин|Ireland|Dublin
+IT|Италия|Рим|Italy|Rome
+LV|Латвия|Рига|Latvia|Riga
+LI|Лихтенштейн|Вадуц|Liechtenstein|Vaduz
+LT|Литва|Вильнюс|Lithuania|Vilnius
+LU|Люксембург|Люксембург|Luxembourg|Luxembourg
+MT|Мальта|Валлетта|Malta|Valletta
+MD|Молдова|Кишинёв|Moldova|Chișinău
+MC|Монако|Монако|Monaco|Monaco
+ME|Черногория|Подгорица|Montenegro|Podgorica
+NL|Нидерланды|Амстердам|Netherlands|Amsterdam
+MK|Северная Македония|Скопье|North Macedonia|Skopje
+NO|Норвегия|Осло|Norway|Oslo
+PL|Польша|Варшава|Poland|Warsaw
+PT|Португалия|Лиссабон|Portugal|Lisbon
+RO|Румыния|Бухарест|Romania|Bucharest
+RU|Россия|Москва|Russia|Moscow
+SM|Сан-Марино|Сан-Марино|San Marino|San Marino
+RS|Сербия|Белград|Serbia|Belgrade
+SK|Словакия|Братислава|Slovakia|Bratislava
+SI|Словения|Любляна|Slovenia|Ljubljana
+ES|Испания|Мадрид|Spain|Madrid
+SE|Швеция|Стокгольм|Sweden|Stockholm
+CH|Швейцария|Берн|Switzerland|Bern
+UA|Украина|Киев|Ukraine|Kyiv
+GB|Великобритания|Лондон|United Kingdom|London
+VA|Ватикан|Ватикан|Vatican City|Vatican City
+DZ|Алжир|Алжир|Algeria|Algiers
+AO|Ангола|Луанда|Angola|Luanda
+BJ|Бенин|Порто-Ново|Benin|Porto-Novo
+BW|Ботсвана|Габороне|Botswana|Gaborone
+BF|Буркина-Фасо|Уагадугу|Burkina Faso|Ouagadougou
+BI|Бурунди|Гитега|Burundi|Gitega
+CV|Кабо-Верде|Прая|Cabo Verde|Praia
+CM|Камерун|Яунде|Cameroon|Yaoundé
+CF|Центральноафриканская Республика|Банги|Central African Republic|Bangui
+TD|Чад|Нджамена|Chad|N'Djamena
+KM|Коморы|Морони|Comoros|Moroni
+CG|Республика Конго|Браззавиль|Republic of the Congo|Brazzaville
+CD|Демократическая Республика Конго|Киншаса|Democratic Republic of the Congo|Kinshasa
+CI|Кот-д'Ивуар|Ямусукро|Côte d'Ivoire|Yamoussoukro
+DJ|Джибути|Джибути|Djibouti|Djibouti
+EG|Египет|Каир|Egypt|Cairo
+GQ|Экваториальная Гвинея|Сьюдад-де-ла-Пас|Equatorial Guinea|Ciudad de la Paz
+ER|Эритрея|Асмэра|Eritrea|Asmara
+SZ|Эсватини|Мбабане|Eswatini|Mbabane
+ET|Эфиопия|Аддис-Абеба|Ethiopia|Addis Ababa
+GA|Габон|Либревиль|Gabon|Libreville
+GM|Гамбия|Банжул|Gambia|Banjul
+GH|Гана|Аккра|Ghana|Accra
+GN|Гвинея|Конакри|Guinea|Conakry
+GW|Гвинея-Бисау|Бисау|Guinea-Bissau|Bissau
+KE|Кения|Найроби|Kenya|Nairobi
+LS|Лесото|Масеру|Lesotho|Maseru
+LR|Либерия|Монровия|Liberia|Monrovia
+LY|Ливия|Триполи|Libya|Tripoli
+MG|Мадагаскар|Антананариву|Madagascar|Antananarivo
+MW|Малави|Лилонгве|Malawi|Lilongwe
+ML|Мали|Бамако|Mali|Bamako
+MR|Мавритания|Нуакшот|Mauritania|Nouakchott
+MU|Маврикий|Порт-Луи|Mauritius|Port Louis
+MA|Марокко|Рабат|Morocco|Rabat
+MZ|Мозамбик|Мапуту|Mozambique|Maputo
+NA|Намибия|Виндхук|Namibia|Windhoek
+NE|Нигер|Ниамей|Niger|Niamey
+NG|Нигерия|Абуджа|Nigeria|Abuja
+RW|Руанда|Кигали|Rwanda|Kigali
+ST|Сан-Томе и Принсипи|Сан-Томе|São Tomé and Príncipe|São Tomé
+SN|Сенегал|Дакар|Senegal|Dakar
+SC|Сейшельские Острова|Виктория|Seychelles|Victoria
+SL|Сьерра-Леоне|Фритаун|Sierra Leone|Freetown
+SO|Сомали|Могадишо|Somalia|Mogadishu
+ZA|Южно-Африканская Республика|Претория|South Africa|Pretoria
+SS|Южный Судан|Джуба|South Sudan|Juba
+SD|Судан|Хартум|Sudan|Khartoum
+TZ|Танзания|Додома|Tanzania|Dodoma
+TG|Того|Ломе|Togo|Lomé
+TN|Тунис|Тунис|Tunisia|Tunis
+UG|Уганда|Кампала|Uganda|Kampala
+ZM|Замбия|Лусака|Zambia|Lusaka
+ZW|Зимбабве|Хараре|Zimbabwe|Harare
+AG|Антигуа и Барбуда|Сент-Джонс|Antigua and Barbuda|Saint John's
+BS|Багамские Острова|Нассау|Bahamas|Nassau
+BB|Барбадос|Бриджтаун|Barbados|Bridgetown
+BZ|Белиз|Бельмопан|Belize|Belmopan
+CA|Канада|Оттава|Canada|Ottawa
+CR|Коста-Рика|Сан-Хосе|Costa Rica|San José
+CU|Куба|Гавана|Cuba|Havana
+DM|Доминика|Розо|Dominica|Roseau
+DO|Доминиканская Республика|Санто-Доминго|Dominican Republic|Santo Domingo
+SV|Сальвадор|Сан-Сальвадор|El Salvador|San Salvador
+GD|Гренада|Сент-Джорджес|Grenada|St. George's
+GT|Гватемала|Гватемала|Guatemala|Guatemala City
+HT|Гаити|Порт-о-Пренс|Haiti|Port-au-Prince
+HN|Гондурас|Тегусигальпа|Honduras|Tegucigalpa
+JM|Ямайка|Кингстон|Jamaica|Kingston
+MX|Мексика|Мехико|Mexico|Mexico City
+NI|Никарагуа|Манагуа|Nicaragua|Managua
+PA|Панама|Панама|Panama|Panama City
+KN|Сент-Китс и Невис|Бастер|Saint Kitts and Nevis|Basseterre
+LC|Сент-Люсия|Кастри|Saint Lucia|Castries
+VC|Сент-Винсент и Гренадины|Кингстаун|Saint Vincent and the Grenadines|Kingstown
+TT|Тринидад и Тобаго|Порт-оф-Спейн|Trinidad and Tobago|Port of Spain
+US|США|Вашингтон|United States|Washington, D.C.
+AR|Аргентина|Буэнос-Айрес|Argentina|Buenos Aires
+BO|Боливия|Сукре|Bolivia|Sucre
+BR|Бразилия|Бразилиа|Brazil|Brasília
+CL|Чили|Сантьяго|Chile|Santiago
+CO|Колумбия|Богота|Colombia|Bogotá
+EC|Эквадор|Кито|Ecuador|Quito
+GY|Гайана|Джорджтаун|Guyana|Georgetown
+PY|Парагвай|Асунсьон|Paraguay|Asunción
+PE|Перу|Лима|Peru|Lima
+SR|Суринам|Парамарибо|Suriname|Paramaribo
+UY|Уругвай|Монтевидео|Uruguay|Montevideo
+VE|Венесуэла|Каракас|Venezuela|Caracas
+AU|Австралия|Канберра|Australia|Canberra
+FJ|Фиджи|Сува|Fiji|Suva
+KI|Кирибати|Южная Тарава|Kiribati|South Tarawa
+MH|Маршалловы Острова|Маджуро|Marshall Islands|Majuro
+FM|Микронезия|Паликир|Micronesia|Palikir
+NR|Науру|Ярен|Nauru|Yaren
+NZ|Новая Зеландия|Веллингтон|New Zealand|Wellington
+PW|Палау|Нгерулмуд|Palau|Ngerulmud
+PG|Папуа — Новая Гвинея|Порт-Морсби|Papua New Guinea|Port Moresby
+WS|Самоа|Апиа|Samoa|Apia
+SB|Соломоновы Острова|Хониара|Solomon Islands|Honiara
+TO|Тонга|Нукуалофа|Tonga|Nukuʻalofa
+TV|Тувалу|Фунафути|Tuvalu|Funafuti
+VU|Вануату|Порт-Вила|Vanuatu|Port Vila`;
+const T={
+kk:{title:'Әлем елдері',sub1:'{n} елдің атауы, астанасы және туы.',sub2:'Оқы, үйрен, сосын тестте өзіңді сына!',hello:'Сәлем!',globe:'Күлімдеген глобус',
+tabList:'Елдер',tabQuiz:'Тест ойыны',search:'Елді немесе астананы ізде...',searchA:'Іздеу',capital:'Астанасы',
+empty:'Ондай ел табылмады. Басқаша жазып көр!',close:'Жабу',flag:'Ту',
+c_all:'Барлығы',c_as:'Азия',c_eu:'Еуропа',c_af:'Африка',c_na:'Солтүстік Америка',c_sa:'Оңтүстік Америка',c_oc:'Аустралия және Мұхит елдері',
+fLoad:'Тулар жүктелуде...',fFail:'Тулар жүктелмеді. Интернетті тексеріп, бетті жаңартыңыз.',fNo:'Ту жүктелмеді',
+s1:'1. Атың кім?',namePh:'Есіміңді жаз...',perr:'Ойынды бастау үшін алдымен есіміңді жаз!',s2:'2. Қай құрлық?',s3:'3. Неше сұрақ?',qnum:'{n} сұрақ',s4:'4. Ойынды таңда да, баста!',
+m1:'Әлем елдерінің туын тауып көр!',m1d:'Елдің атауы шығады. Төрт туның ішінен дұрысын таңда.',m1ex:'Жапония',flags:'тулар',
+m2:'Бұл қай елдің туы? Тауып көр!',m2d:'Ту шығады. Төрт елдің ішінен дұрысын таңда.',flag1:'ту',countries:'елдер',
+lbTitle:'Үздік ойыншылар',lb1:'Туын тауып көр',lb2:'Елін тауып көр',lbNote:'Әр дұрыс жауап — 10 ұпай. Әр ойыншының ең жақсы нәтижесі ғана тұрады.',
+wLocal:'Нәтижелер осы құрылғыдағы браузерде сақталады.',wSheets:'Нәтижелер мұғалімнің Google Sheets кестесінде сақталады.',wFail:'Ортақ кестеге қосылу мүмкін болмады, нәтижелер осы құрылғыда сақталады.',
+clear:'Тізімді тазалау',clear2:'Иә, бәрін өшір',lbEmpty:'Әзірге ешкім ойнаған жоқ. Бірінші бол!',
+player:'Ойыншы: {n}',points:'Ұпай: {n}',streak:'Қатарынан: {n}',quit:'Шығу',q1:'Бұл елдің туы қайсы?',q2:'Бұл қай елдің туы?',next:'Келесі →',
+praise:['Жарайсың, {n}!','Керемет!','Тамаша, {n}!','Дұрыс!','Мықтысың!'],isC:'Бұл — {c}.',capOf:'Астанасы: {c}',wrong:'Қате. Дұрыс жауап: {l} — {c}',
+end:['{n}, тағы байқап көр!','{n}, жақсы бастама!','Өте жақсы, {n}!','{n}, сен — нағыз саяхатшысың!'],
+sum:'{t} сұрақтың {o}-не дұрыс жауап бердің. Қатарынан ең көбі: {b}',rank:'Ұпай: {p} · Орның: {r}',rec:' · Жаңа рекорд!',
+again:'Қайта ойнау',menu:'Басқа тест таңдау',review:'Мына елдерді қайталап ал:',
+foot1:'Пернетақтада: 1–4 немесе A–D пернелері жауап таңдайды, Enter — келесі сұрақ.',
+foot2:'Дереккөздер: тулар — Flag Icons жинағы (авторы Panayiotis Lipiridis, <a href="https://flagicons.lipis.dev">flagicons.lipis.dev</a>), барлық тулар бірдей 4:3 пішінде көрсетілген. Елдер тізімі — БҰҰ-ның 193 мүшесі және 2 бақылаушы мемлекет (Ватикан, Палестина). Астаналар 2026 жылғы қарашадағы ресми деректер бойынша.'},
+ru:{title:'Страны мира',sub1:'Названия, столицы и флаги {n} стран.',sub2:'Читай, учись, а потом проверь себя в тесте!',hello:'Привет!',globe:'Улыбающийся глобус',
+tabList:'Страны',tabQuiz:'Игра-тест',search:'Найди страну или столицу...',searchA:'Поиск',capital:'Столица',
+empty:'Такая страна не найдена. Попробуй написать по-другому!',close:'Закрыть',flag:'Флаг',
+c_all:'Все',c_as:'Азия',c_eu:'Европа',c_af:'Африка',c_na:'Северная Америка',c_sa:'Южная Америка',c_oc:'Австралия и Океания',
+fLoad:'Флаги загружаются...',fFail:'Флаги не загрузились. Проверьте интернет и обновите страницу.',fNo:'Флаг не загрузился',
+s1:'1. Как тебя зовут?',namePh:'Напиши своё имя...',perr:'Чтобы начать игру, сначала напиши своё имя!',s2:'2. Какая часть света?',s3:'3. Сколько вопросов?',qnum:'{n} вопросов',s4:'4. Выбери игру и начинай!',
+m1:'Найди флаг страны!',m1d:'Появится название страны. Выбери правильный флаг из четырёх.',m1ex:'Япония',flags:'флаги',
+m2:'Чей это флаг? Угадай!',m2d:'Появится флаг. Выбери правильную страну из четырёх.',flag1:'флаг',countries:'страны',
+lbTitle:'Лучшие игроки',lb1:'Найди флаг',lb2:'Угадай страну',lbNote:'За каждый правильный ответ — 10 очков. В списке остаётся только лучший результат каждого игрока.',
+wLocal:'Результаты сохраняются в браузере на этом устройстве.',wSheets:'Результаты сохраняются в таблице Google Sheets учителя.',wFail:'Не удалось подключиться к общей таблице, результаты сохраняются на этом устройстве.',
+clear:'Очистить список',clear2:'Да, удалить всё',lbEmpty:'Пока никто не играл. Будь первым!',
+player:'Игрок: {n}',points:'Очки: {n}',streak:'Подряд: {n}',quit:'Выйти',q1:'Какой флаг у этой страны?',q2:'Чей это флаг?',next:'Дальше →',
+praise:['Молодец, {n}!','Отлично!','Супер, {n}!','Верно!','Так держать!'],isC:'Это {c}.',capOf:'Столица: {c}',wrong:'Неверно. Правильный ответ: {l} — {c}',
+end:['{n}, попробуй ещё раз!','{n}, хорошее начало!','Очень хорошо, {n}!','{n}, ты отлично знаешь страны мира!'],
+sum:'Правильных ответов: {o} из {t}. Больше всего подряд: {b}',rank:'Очки: {p} · Твоё место: {r}',rec:' · Новый рекорд!',
+again:'Играть ещё раз',menu:'Выбрать другой тест',review:'Повтори эти страны:',
+foot1:'На клавиатуре: клавиши 1–4 или A–D выбирают ответ, Enter — следующий вопрос.',
+foot2:'Источники: флаги — коллекция Flag Icons (автор Panayiotis Lipiridis, <a href="https://flagicons.lipis.dev">flagicons.lipis.dev</a>), все флаги показаны в одинаковой пропорции 4:3. Список стран — 193 государства — члена ООН и 2 государства-наблюдателя (Ватикан, Палестина). Столицы — по официальным данным на ноябрь 2026 года.'},
+en:{title:'Countries of the World',sub1:'Names, capitals and flags of {n} countries.',sub2:'Read, learn, then test yourself in the quiz!',hello:'Hello!',globe:'Smiling globe',
+tabList:'Countries',tabQuiz:'Quiz game',search:'Search for a country or capital...',searchA:'Search',capital:'Capital',
+empty:'No country found. Try spelling it differently!',close:'Close',flag:'Flag',
+c_all:'All',c_as:'Asia',c_eu:'Europe',c_af:'Africa',c_na:'North America',c_sa:'South America',c_oc:'Australia and Oceania',
+fLoad:'Loading flags...',fFail:'The flags did not load. Check your internet connection and refresh the page.',fNo:'Flag not loaded',
+s1:'1. What is your name?',namePh:'Type your name...',perr:'Type your name first to start the game!',s2:'2. Which part of the world?',s3:'3. How many questions?',qnum:'{n} questions',s4:'4. Pick a game and start!',
+m1:'Find the country\'s flag!',m1d:'You will see a country\'s name. Pick the right flag out of four.',m1ex:'Japan',flags:'flags',
+m2:'Whose flag is this? Guess!',m2d:'You will see a flag. Pick the right country out of four.',flag1:'flag',countries:'countries',
+lbTitle:'Top players',lb1:'Find the flag',lb2:'Find the country',lbNote:'Each correct answer is worth 10 points. Only each player\'s best result is shown.',
+wLocal:'Results are saved in this device\'s browser.',wSheets:'Results are saved in the teacher\'s Google Sheets spreadsheet.',wFail:'Could not connect to the shared spreadsheet, so results are saved on this device.',
+clear:'Clear the list',clear2:'Yes, delete everything',lbEmpty:'Nobody has played yet. Be the first!',
+player:'Player: {n}',points:'Points: {n}',streak:'In a row: {n}',quit:'Exit',q1:'Which flag belongs to this country?',q2:'Which country\'s flag is this?',next:'Next →',
+praise:['Well done, {n}!','Excellent!','Great job, {n}!','Correct!','Awesome!'],isC:'This is {c}.',capOf:'Capital: {c}',wrong:'Not quite. The right answer is {l} — {c}',
+end:['{n}, give it another try!','{n}, good start!','Very good, {n}!','{n}, you are a true traveller!'],
+sum:'You got {o} out of {t} right. Longest streak: {b}',rank:'Points: {p} · Your place: {r}',rec:' · New record!',
+again:'Play again',menu:'Choose another quiz',review:'Review these countries:',
+foot1:'Keyboard: press 1–4 or A–D to answer, Enter for the next question.',
+foot2:'Sources: flags — the Flag Icons collection (by Panayiotis Lipiridis, <a href="https://flagicons.lipis.dev">flagicons.lipis.dev</a>); all flags are shown in the same 4:3 shape. Country list — the 193 UN member states and 2 observer states (Vatican City, Palestine). Capitals as of official data, November 2026.'}};
+const NOTES={
+GQ:{ru:'Стала столицей указом президента 2 января 2026 года. Прежняя столица — Малабо.',en:'Became the capital by presidential decree on 2 January 2026. The former capital was Malabo.'},
+BO:{ru:'По конституции столица — Сукре. Правительство и парламент находятся в Ла-Пасе.',en:'Sucre is the capital under the constitution. The government and parliament sit in La Paz.'},
+NL:{ru:'Правительство и парламент находятся в Гааге.',en:'The government and parliament are in The Hague.'},
+IL:{ru:'Израиль объявил своей столицей Иерусалим, но посольства многих стран находятся в Тель-Авиве.',en:'Israel has declared Jerusalem its capital, but many countries keep their embassies in Tel Aviv.'},
+PS:{ru:'Палестина объявила своей столицей Восточный Иерусалим. Правительство работает в Рамалле.',en:'Palestine has declared East Jerusalem its capital. The government works in Ramallah.'},
+CI:{ru:'Крупнейший город — Абиджан.',en:'The largest city is Abidjan.'},
+MY:{ru:'Правительство находится в Путраджае.',en:'The government is based in Putrajaya.'},
+LK:{ru:'Крупнейший город — Коломбо.',en:'The largest city is Colombo.'},
+BJ:{ru:'Правительство работает в Котону.',en:'The government works in Cotonou.'},
+TZ:{ru:'Крупнейший город — Дар-эс-Салам.',en:'The largest city is Dar es Salaam.'},
+SZ:{ru:'Парламент находится в Лобамбе.',en:'The parliament is in Lobamba.'},
+ID:{ru:'Строится новая столица Нусантара, но по закону столицей пока остаётся Джакарта.',en:'A new capital, Nusantara, is being built, but by law Jakarta is still the capital.'},
+ZA:{ru:'У страны три столицы: Претория (правительство), Кейптаун (парламент), Блумфонтейн (верховный суд).',en:'The country has three capitals: Pretoria (government), Cape Town (parliament) and Bloemfontein (supreme court).'},
+NR:{ru:'Официальной столицы нет, правительство находится в округе Ярен.',en:'Nauru has no official capital; the government is in the Yaren district.'},
+CH:{ru:'В законе нет слова «столица», Берн называют «федеральным городом».',en:'The law does not use the word "capital"; Bern is called the "federal city".'}};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const LANGS=['kk','ru','en'];
+let L='kk';try{const s=localStorage.getItem('alem-lang');if(LANGS.includes(s))L=s}catch(e){}
+const t=(k,v={})=>{let s=T[L][k];if(s==null)s=T.kk[k];return typeof s==='string'?s.replace(/\{(\w)\}/g,(m,a)=>v[a]!=null?v[a]:m):s};
+const fill=(s,v)=>s.replace(/\{(\w)\}/g,(m,a)=>v[a]!=null?v[a]:m);
+
+/* Деректер: үш тілдегі атау, астана және түсініктеме */
+const C=RAW.split('\n').map(l=>{const[k,c,n,cap,note]=l.split('|');return{k,c,nm:{kk:n},cp:{kk:cap},nt:note?{kk:note,...(NOTES[c]||{})}:null}});
+const byC=Object.fromEntries(C.map(x=>[x.c,x]));
+RUEN.split('\n').forEach(l=>{const[c,rn,rc,en,ec]=l.split('|');const x=byC[c];if(x){x.nm.ru=rn;x.cp.ru=rc;x.nm.en=en;x.cp.en=ec}});
+const N=x=>x.nm[L]||x.nm.kk,CAP=x=>x.cp[L]||x.cp.kk,NT=x=>x.nt&&(x.nt[L]||x.nt.kk);
+const coll=()=>new Intl.Collator(L);
+
+/* Тулар: Flag Icons жинағы (Panayiotis Lipiridis, MIT), @iconify-json/flag 1.2.15 */
+let SET=null,flagState='loading';
+const svgOf=c=>{const k=c.toLowerCase()+'-4x3';let ic=SET.icons[k];if(!ic&&SET.aliases&&SET.aliases[k])ic=SET.icons[SET.aliases[k].parent];if(!ic)return '';
+ const w=ic.width||SET.width||640,h=ic.height||SET.height||480;return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${ic.left||0} ${ic.top||0} ${w} ${h}" aria-hidden="true">${ic.body}</svg>`};
+const flagInner=c=>SET?svgOf(c):flagState==='fail'?`<small>${t('fNo')}</small>`:'';
+const flag=(c,cls='')=>`<span class="flag ${cls}" data-c="${c}" role="img" aria-label="${t('flag')}">${flagInner(c)}</span>`;
+const refreshFlags=()=>document.querySelectorAll('.flag[data-c]').forEach(e=>e.innerHTML=flagInner(e.dataset.c));
+const fstat=()=>{const f=$('fstat');f.classList.toggle('hidden',flagState==='ok'&&!f.dataset.force);f.classList.toggle('err',flagState==='fail');f.textContent=flagState==='fail'?t('fFail'):t('fLoad')};
+const flagsReady=import('https://cdn.jsdelivr.net/npm/@iconify-json/flag@1.2.15/+esm').then(m=>{SET=m.icons;flagState='ok';refreshFlags();fstat()})
+ .catch(()=>{flagState='fail';refreshFlags();fstat()});
+
+/* Тізім */
+let cont='all';
+const chipRow=(el,get,onPick)=>{el.innerHTML=['all','as','eu','af','na','sa','oc'].map(k=>`<button class="chip" data-k="${k}" aria-pressed="${k===get()}">${t('c_'+k)}</button>`).join('');
+ el.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;el.querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));onPick(b.dataset.k)}};
+const plural=n=>L==='kk'?n+' ел':L==='en'?n+(n===1?' country':' countries'):n+' '+(n%10===1&&n%100!==11?'страна':n%10>=2&&n%10<=4&&(n%100<12||n%100>14)?'страны':'стран');
+const renderList=()=>{const q=$('q').value.trim().toLowerCase(),cl=coll();
+ const list=C.filter(x=>(cont==='all'||x.k===cont)&&(!q||LANGS.some(l=>x.nm[l].toLowerCase().includes(q)||x.cp[l].toLowerCase().includes(q)))).sort((a,b)=>cl.compare(N(a),N(b)));
+ $('cnt').textContent=plural(list.length);
+ $('grid').innerHTML=list.length?list.map(x=>`<button class="cc" data-c="${x.c}">${flag(x.c)}<b>${esc(N(x))}</b><span>${t('capital')}: ${esc(CAP(x))}</span></button>`).join(''):`<div class="empty">${t('empty')}</div>`};
+$('q').addEventListener('input',renderList);
+$('grid').onclick=e=>{const b=e.target.closest('.cc');if(b)openCard(b.dataset.c)};
+let openC=null;
+const openCard=c=>{openC=c;const x=byC[c];$('mbox').innerHTML=`<button class="x" id="mx" aria-label="${t('close')}">×</button>${flag(c)}<h2>${esc(N(x))}</h2><div class="cap">${t('capital')}: <b>${esc(CAP(x))}</b></div><div class="cont">${t('c_'+x.k)}</div>${NT(x)?`<p class="note">${esc(NT(x))}</p>`:''}`;$('modal').classList.remove('hidden');$('mx').focus()};
+const closeModal=()=>{openC=null;$('modal').classList.add('hidden')};
+$('modal').onclick=e=>{if(e.target.id==='modal'||e.target.id==='mx')closeModal()};
+
+/* Бөлімдер */
+const show=v=>{['list','quiz'].forEach(n=>{$('view-'+n).classList.toggle('hidden',n!==v);$('tab-'+n).setAttribute('aria-selected',n===v)})};
+$('tab-list').onclick=()=>show('list');$('tab-quiz').onclick=()=>show('quiz');
+
+/* Тест */
+let qc='all',qN=10,mode=1,Q=[],i=0,score=0,streak=0,best=0,wrong=[],locked=false,endRes=null;
+const renderQnum=()=>{$('qnum').innerHTML=[5,10,20,30].map(n=>`<button class="chip" data-n="${n}" aria-pressed="${n===qN}">${t('qnum',{n})}</button>`).join('')};
+$('qnum').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;$('qnum').querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));qN=+b.dataset.n};
+const shuffle=a=>{a=a.slice();for(let j=a.length-1;j>0;j--){const r=Math.random()*(j+1)|0;[a[j],a[r]]=[a[r],a[j]]}return a};
+let ac=null;
+const beep=ok=>{try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();const tm=ac.currentTime;(ok?[523,659,784]:[220,180]).forEach((f,k)=>{const o=ac.createOscillator(),g=ac.createGain();o.frequency.value=f;o.type=ok?'triangle':'square';g.gain.setValueAtTime(.12,tm+k*.1);g.gain.exponentialRampToValueAtTime(.001,tm+k*.1+.18);o.connect(g).connect(ac.destination);o.start(tm+k*.1);o.stop(tm+k*.1+.2)})}catch(e){}};
+const confetti=()=>{if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;const cols=['#ffc93c','#ff6b5a','#20b46a','#1f7ae0','#b26bff'];for(let k=0;k<26;k++){const d=document.createElement('div');d.className='conf';d.style.left=Math.random()*100+'vw';d.style.background=cols[k%5];d.style.animationDelay=Math.random()*.3+'s';document.body.appendChild(d);setTimeout(()=>d.remove(),1900)}};
+document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>start(+b.dataset.mode));
+let player='';try{player=localStorage.getItem('alem-name')||''}catch(e){}$('pname').value=player;
+$('pname').addEventListener('input',()=>{$('pname').classList.remove('bad');$('perr').classList.add('hidden')});
+const start=m=>{const nm=$('pname').value.trim().replace(/\s+/g,' ');if(!nm){$('pname').classList.remove('bad');void $('pname').offsetWidth;$('pname').classList.add('bad');$('perr').classList.remove('hidden');$('pname').scrollIntoView({block:'center'});$('pname').focus({preventScroll:true});return}
+ player=nm;try{localStorage.setItem('alem-name',nm)}catch(e){}
+ if(flagState!=='ok'){$('fstat').dataset.force=1;fstat();$('fstat').classList.remove('hidden');$('fstat').scrollIntoView({block:'center'});if(start.w)return;start.w=1;flagsReady.then(()=>{delete $('fstat').dataset.force;fstat();if(flagState==='ok')start(m)});return}
+ mode=m;const pool=C.filter(x=>qc==='all'||x.k===qc);Q=shuffle(pool).slice(0,Math.min(qN,pool.length)).map(a=>({a,opts:shuffle([a,...shuffle(pool.filter(x=>x!==a)).slice(0,3)]),picked:null,pi:Math.random()*5|0}));
+ i=0;score=0;streak=0;best=0;wrong=[];endRes=null;$('q-start').classList.add('hidden');$('q-end').classList.add('hidden');$('q-play').classList.remove('hidden');ask()};
+const bar=()=>{$('pn').textContent=t('player',{n:player});$('qn').textContent=`${i+1} / ${Q.length}`;$('pg').style.width=(i/Q.length*100)+'%';$('sc').textContent=t('points',{n:score*10});$('st').textContent=t('streak',{n:streak})};
+const renderQ=()=>{const q=Q[i];if(!q)return;bar();
+ $('prompt').innerHTML=mode===1?`<div class="lbl">${t('q1')}</div><h2>${esc(N(q.a))}</h2>`:`<div class="lbl">${t('q2')}</div>${flag(q.a.c,'bigflag')}`;
+ $('opts').innerHTML=q.opts.map((o,k)=>`<button class="opt ${mode===1?'fl':''}" data-k="${k}"><span class="let">${'ABCD'[k]}</span>${mode===1?flag(o.c):esc(N(o))}</button>`).join('');
+ const right=q.opts.indexOf(q.a);
+ if(q.picked==null){$('msg').innerHTML='';$('next').classList.add('hidden');return}
+ const btns=[...$('opts').children];btns.forEach(b=>b.disabled=true);btns[right].classList.add('ok');
+ if(q.picked===right){$('msg').innerHTML=`<span class="good">${esc(fill(T[L].praise[q.pi],{n:player}))}${mode===1?'':' '+esc(t('isC',{c:N(q.a)}))} ${esc(t('capOf',{c:CAP(q.a)}))}</span>`}
+ else{btns[q.picked].classList.add('no');$('msg').innerHTML=`<span class="oops">${esc(t('wrong',{l:'ABCD'[right],c:N(q.a)}))}</span>`;$('next').classList.remove('hidden')}};
+const ask=()=>{locked=false;renderQ();$('opts').querySelector('.opt').focus({preventScroll:true})};
+const pick=k=>{if(locked)return;locked=true;const q=Q[i],right=q.opts.indexOf(q.a);q.picked=k;
+ if(k===right){score++;streak++;best=Math.max(best,streak);beep(1);confetti();renderQ();$('opts').children[k].classList.add('pop');const at=i;setTimeout(()=>{if(locked&&i===at)next()},1500)}
+ else{streak=0;wrong.push(q.a);beep(0);renderQ();$('next').focus()}};
+$('opts').onclick=e=>{const b=e.target.closest('.opt');if(b)pick(+b.dataset.k)};
+const next=()=>{if(!locked)return;i++;if(i<Q.length)ask();else finish()};
+$('next').onclick=next;
+$('quit').onclick=()=>{locked=false;$('q-play').classList.add('hidden');$('q-start').classList.remove('hidden')};
+
+/* Үздік ойыншылар */
+let LB=[];try{LB=JSON.parse(localStorage.getItem('alem-lb')||'[]');if(!Array.isArray(LB))LB=[]}catch(e){LB=[]}
+const saveLB=()=>{try{localStorage.setItem('alem-lb',JSON.stringify(LB))}catch(e){}};
+const cmp=(a,b)=>b.pts-a.pts||b.pct-a.pct||b.best-a.best||a.t-b.t;
+const key=n=>String(n).toLocaleLowerCase('kk');
+/* Google Sheets: Apps Script веб-қосымшасының сілтемесін осында қойыңыз (бос болса, нәтижелер тек осы құрылғыда сақталады) */
+const SHEETS_URL='';
+let RB=null,where='wLocal';
+const sorted=m=>(RB||LB).filter(r=>r.m===m).sort(cmp);
+const upsert=(arr,r)=>{const old=arr.find(x=>x.m===r.m&&key(x.n)===key(r.n));if(!old){arr.push(r);return true}if(cmp(r,old)<0){Object.assign(old,r);return true}return false};
+const takeRemote=d=>{if(d&&d.top){RB=[...(d.top[1]||[]),...(d.top[2]||[])];where='wSheets';$('lbclear').classList.add('hidden');renderLB();const el=$('endlb');if(el)el.innerHTML=lbRows(mode,player)}};
+const loadRemote=()=>{if(!SHEETS_URL)return;fetch(SHEETS_URL).then(r=>r.json()).then(takeRemote).catch(()=>{where='wFail';renderLB()})};
+const post=r=>fetch(SHEETS_URL,{method:'POST',body:JSON.stringify({...r,cont:T.kk['c_'+qc],lang:L})}).then(x=>x.json()).then(takeRemote);
+const record=r=>{let rec;if(RB){rec=upsert(RB,r);post(r).catch(()=>{upsert(LB,r);saveLB()})}
+ else{rec=upsert(LB,r);saveLB();if(SHEETS_URL)post(r).catch(()=>{})}
+ renderLB();return{rank:sorted(r.m).findIndex(x=>key(x.n)===key(r.n))+1,rec}};
+const lbRows=(m,me)=>{const rows=sorted(m).slice(0,10);if(!rows.length)return `<li><span class="rk">–</span><b>${t('lbEmpty')}</b></li>`;
+ return rows.map((r,k)=>`<li class="${me&&key(r.n)===key(me)?'me':''}"><span class="rk ${k<3?'r'+(k+1):''}">${k+1}</span><b>${esc(r.n)}</b><span class="of">${r.ok}/${r.tot}</span><strong>${r.pts}</strong></li>`).join('')};
+let lbm=1,clr=false;
+const renderLB=()=>{$('lb').innerHTML=lbRows(lbm,player);$('lbwhere').textContent=t(where);$('lbclear').textContent=clr?t('clear2'):t('clear')};
+$('lbtabs').onclick=e=>{const b=e.target.closest('.chip');if(!b)return;$('lbtabs').querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x===b));lbm=+b.dataset.m;renderLB()};
+$('lbclear').onclick=()=>{if(!clr){clr=true;renderLB();setTimeout(()=>{clr=false;renderLB()},4000);return}clr=false;LB=[];saveLB();renderLB()};
+
+const finish=()=>{locked=false;$('q-play').classList.add('hidden');const p=score/Q.length,s=p>=.9?3:p>=.6?2:p>0?1:0;if(s>=2)confetti();
+ const res=record({n:player,m:mode,pts:score*10,ok:score,tot:Q.length,pct:Math.round(p*100),best,t:Date.now()});
+ endRes={s,res};renderEnd();$('q-end').classList.remove('hidden')};
+const renderEnd=()=>{if(!endRes)return;const{s,res}=endRes;
+ $('q-end').innerHTML=`<svg class="hero-globe" viewBox="0 0 200 200" aria-hidden="true"><use href="#globe"/></svg><div class="stars">${[0,1,2].map(k=>`<span class="${k<s?'':'off'}">★</span>`).join('')}</div><h2>${esc(fill(T[L].end[s],{n:player}))}</h2>
+ <div style="font-size:21px;font-weight:700">${esc(t('sum',{t:Q.length,o:score,b:best}))}</div>
+ <div class="rank">${esc(t('rank',{p:score*10,r:res.rank}))}${res.rec?t('rec'):''}</div>
+ <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><button class="btn" id="again">${t('again')}</button><button class="btn alt" id="menu">${t('menu')}</button></div>
+ ${wrong.length?`<div class="set">${t('review')}</div><div class="review">${wrong.map(x=>`<div class="rv">${flag(x.c)}<div><b>${esc(N(x))}</b><span>${t('capital')}: ${esc(CAP(x))}</span></div></div>`).join('')}</div>`:''}
+ <div class="set">${t('lbTitle')} — ${t(mode===1?'lb1':'lb2')}</div><ol class="lb" id="endlb">${lbRows(mode,player)}</ol>`;
+ $('again').onclick=()=>start(mode);$('menu').onclick=()=>{endRes=null;$('q-end').classList.add('hidden');$('q-start').classList.remove('hidden')}};
+
+/* Тіл ауыстыру */
+const applyLang=()=>{document.documentElement.lang=L;document.title=t('title');
+ document.querySelectorAll('[data-t]').forEach(e=>{const v=t(e.dataset.t,{n:C.length});if(typeof v==='string')e.innerHTML=v});
+ document.querySelectorAll('[data-tp]').forEach(e=>e.placeholder=t(e.dataset.tp));
+ document.querySelectorAll('[data-ta]').forEach(e=>e.setAttribute('aria-label',t(e.dataset.ta)));
+ document.querySelectorAll('.langs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===L));
+ const bub=document.querySelector('.bubble');bub.classList.remove('wave');void bub.offsetWidth;bub.classList.add('wave');
+ chipRow($('chips'),()=>cont,k=>{cont=k;renderList()});chipRow($('qchips'),()=>qc,k=>qc=k);renderQnum();
+ fstat();renderList();renderLB();refreshFlags();
+ if(openC)openCard(openC);
+ if(!$('q-play').classList.contains('hidden'))renderQ();
+ if(!$('q-end').classList.contains('hidden'))renderEnd()};
+document.querySelector('.langs').onclick=e=>{const b=e.target.closest('button');if(!b||b.dataset.lang===L)return;L=b.dataset.lang;try{localStorage.setItem('alem-lang',L)}catch(e){}applyLang()};
+applyLang();loadRemote();
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();if($('q-play').classList.contains('hidden')||e.target.tagName==='INPUT')return;
+ const k='1234'.indexOf(e.key)>=0?'1234'.indexOf(e.key):'abcd'.indexOf(e.key.toLowerCase());
+ if(k>=0&&e.key.length===1&&!locked)pick(k);else if(e.key==='Enter'&&locked){e.preventDefault();next()}});
+}
+</script>
+</body>
+</html>
