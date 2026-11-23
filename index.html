@@ -1006,7 +1006,7 @@ const saveLB=()=>{try{localStorage.setItem('alem-lb',JSON.stringify(LB))}catch(e
 const cmp=(a,b)=>b.pts-a.pts||b.pct-a.pct||b.best-a.best||a.t-b.t;
 const key=n=>String(n).toLocaleLowerCase('kk');
 /* Google Sheets: Apps Script веб-қосымшасының сілтемесін осында қойыңыз (бос болса, нәтижелер тек осы құрылғыда сақталады) */
-const SHEETS_URL='';
+const SHEETS_URL='https://script.google.com/macros/s/AKfycbxRfdu92e-YMuwSC5r_3g-eEGl7_HOpn6OJAFpL6LIWpU0uL6I8-tW9IxUgF2bt-c1VuQ/exec';
 let RB=null,where='wLocal',save='';
 const sorted=m=>(RB||LB).filter(r=>r.m===m).sort(cmp);
 const upsert=(arr,r)=>{const old=arr.find(x=>x.m===r.m&&key(x.n)===key(r.n));if(!old){arr.push(r);return true}if(cmp(r,old)<0){Object.assign(old,r);return true}return false};
