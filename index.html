@@ -27,7 +27,11 @@ header{background:linear-gradient(160deg,var(--sea),var(--sea2));color:#fff;padd
 .top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:center}
 header h1{font-size:clamp(36px,6vw,56px);font-weight:900}
 header p{margin:6px 0 0;font-size:18px;opacity:.95;max-width:34em}
-.hero-globe{width:clamp(96px,18vw,170px);height:auto;filter:drop-shadow(0 8px 0 rgba(0,0,0,.15))}
+.hero-globe{width:clamp(96px,18vw,170px);height:auto;filter:drop-shadow(0 8px 0 rgba(0,0,0,.15));display:block}
+.home{color:inherit;text-decoration:none;display:inline-block;border-radius:16px;cursor:pointer}
+.home h1{transition:transform .15s}.home:hover h1{transform:translateY(-2px)}
+.homeglobe svg{transition:transform .3s}.homeglobe:hover svg{transform:rotate(-12deg) scale(1.04)}
+.home:focus-visible{outline:4px solid var(--sun);outline-offset:4px}
 .navrow{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px}
 nav{display:flex;gap:10px;flex-wrap:wrap}
 .langs{display:flex;gap:6px;background:rgba(255,255,255,.16);padding:6px;border-radius:22px;margin-bottom:10px}
@@ -38,7 +42,7 @@ nav{display:flex;gap:10px;flex-wrap:wrap}
 .gwrap{position:relative}
 .bubble{position:absolute;top:-4px;right:calc(100% - 18px);background:#fff;color:#10264a;font-family:Nunito,system-ui,sans-serif;font-weight:700;font-size:17px;padding:8px 14px;border-radius:18px 18px 4px 18px;white-space:nowrap;box-shadow:0 4px 0 rgba(0,0,0,.12)}
 .bubble.wave{animation:wave .6s}@keyframes wave{30%{transform:rotate(-8deg) scale(1.1)}60%{transform:rotate(5deg)}}
-nav button{font-size:19px;border:0;border-radius:18px 18px 0 0;padding:14px 24px;font-family:Nunito,system-ui,sans-serif;font-weight:700;font-size:19px;background:rgba(255,255,255,.18);color:#fff;min-height:54px}
+nav button{font-size:18px;border:0;border-radius:18px 18px 0 0;padding:14px 24px;font-family:Nunito,system-ui,sans-serif;font-weight:700;font-size:19px;background:rgba(255,255,255,.18);color:#fff;min-height:54px}
 nav button[aria-selected=true]{background:var(--bg);color:var(--ink)}
 main{padding:24px 0 60px}
 .hidden{display:none!important}
@@ -46,7 +50,8 @@ main{padding:24px 0 60px}
 .tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:16px}
 .search{flex:1 1 260px;font-size:18px;padding:12px 16px;border-radius:14px;border:3px solid var(--line);background:var(--card);color:var(--ink);min-height:52px}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
-.chip{border:3px solid var(--line);background:var(--card);border-radius:999px;padding:8px 16px;font-weight:700;font-size:16px;min-height:46px}
+.chip{border:2px solid var(--line);background:var(--card);border-radius:12px;padding:6px 11px;font-weight:700;font-size:14.5px;min-height:40px;white-space:nowrap;flex:none}
+.chips.row{flex-wrap:nowrap;gap:6px;overflow-x:auto;scrollbar-width:thin;padding-bottom:4px;-webkit-overflow-scrolling:touch}
 .chip[aria-pressed=true]{background:var(--sun);border-color:var(--sun);color:#10264a}
 .count{color:var(--soft);font-weight:700}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(150px,44%),1fr));gap:14px}
@@ -93,6 +98,7 @@ footer a{color:inherit}
 .lb .of{color:var(--soft);font-weight:700;white-space:nowrap}
 .lb strong{font-family:Nunito,system-ui,sans-serif;font-size:22px;color:var(--sea);white-space:nowrap}
 .lbnote{color:var(--soft);font-size:14px;margin:12px 0 0}
+.savest{font-weight:800;border-radius:12px;padding:8px 14px;font-size:16px}.savest:empty{display:none}.savest.ok{background:color-mix(in srgb,var(--ok) 18%,transparent);color:var(--ok)}.savest.fail{background:color-mix(in srgb,var(--bad) 15%,transparent);color:var(--bad)}.savest.send,.savest.local{color:var(--soft)}
 .rank{font-size:22px;font-weight:700;background:var(--sun);color:#10264a;border-radius:16px;padding:10px 18px}
 @media(max-width:600px){.lb li{grid-template-columns:38px minmax(0,1fr) auto;font-size:16px;padding:8px 10px}.lb .of{display:none}}
 .set{display:block;margin:22px 0 10px;font-family:Nunito,system-ui,sans-serif;font-weight:700;font-size:20px}
@@ -135,7 +141,63 @@ footer a{color:inherit}
 @keyframes fall{to{transform:translateY(105vh) rotate(540deg);opacity:.6}}
 .pop{animation:pop .5s}@keyframes pop{40%{transform:scale(1.12)}}
 footer{color:var(--soft);font-size:14px;text-align:center;padding:0 0 30px}
-@media(max-width:600px){.top{grid-template-columns:minmax(0,1fr) 84px}.navrow{flex-direction:column-reverse;align-items:stretch}nav{width:100%}.langs{margin:0;justify-content:center}.langs button{flex:1}.bubble{font-size:13px;padding:5px 10px;top:auto;bottom:-8px;right:50%;translate:50% 0;border-radius:14px}nav button{font-size:19px;flex:1;padding:12px 10px;font-size:17px}.opt{min-height:64px;padding-left:52px}.opt .let{width:34px;height:34px}.opt.fl{padding:42px 8px 8px}.ask{grid-template-columns:minmax(0,1fr)}.ask svg.mascot{display:none}.qbar .pill{font-size:15px}}
+main.wrap{padding-top:24px;padding-bottom:60px}
+/* Пазл */
+.pbar{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-bottom:14px}
+.pstage{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:clamp(16px,3vw,32px);align-items:start}
+.board{display:grid;width:100%;aspect-ratio:4/3;border-radius:16px;overflow:hidden;background:var(--line);gap:3px;padding:3px;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:0 8px 0 rgba(0,0,0,.08)}
+.board.done{gap:0;padding:0;box-shadow:0 0 0 5px var(--ok),0 8px 0 rgba(0,0,0,.08)}
+.pc{position:relative;overflow:hidden;border-radius:6px;background:#eef3f9;cursor:grab;transition:transform .12s,box-shadow .12s}
+.board.done .pc{border-radius:0;cursor:default}
+.pc>svg{position:absolute;top:0;left:0;display:block}
+.pc.sel{box-shadow:inset 0 0 0 4px var(--sun);transform:scale(.94);z-index:2}
+.pc.okp::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 2px rgba(32,180,106,.55);border-radius:6px;pointer-events:none}
+.board.done .pc.okp::after{display:none}
+.pside{display:grid;gap:12px;align-content:start}
+.pside .pill{justify-self:start}
+.pside .how{color:var(--soft);font-weight:700;font-size:15px;margin:0}
+.pacts{display:flex;flex-wrap:wrap;gap:8px}
+.pq{display:grid;gap:10px}
+.pq .lbl{font-weight:900;font-size:19px}
+.pq .opts{grid-template-columns:minmax(0,1fr)}
+.pq .opt{min-height:56px;font-size:18px}
+@media(max-width:760px){.pstage{grid-template-columns:minmax(0,1fr)}}
+/* Карточкалар */
+.ctools{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;margin-bottom:16px}
+.ctools .lbl{font-weight:800;color:var(--soft);font-size:15px}
+.seg{display:flex;gap:4px;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:3px}
+.seg button{border:0;background:transparent;border-radius:10px;padding:6px 12px;font-weight:800;font-size:15px;min-height:38px}
+.seg button[aria-pressed=true]{background:var(--sea);color:#fff}
+.tog{display:flex;align-items:center;gap:8px;font-weight:800;font-size:15px;cursor:pointer;min-height:40px}
+.tog input{width:22px;height:22px;accent-color:var(--sea)}
+.cwrap{display:grid;gap:14px;justify-items:center;max-width:620px;margin:0 auto}
+.fc{width:100%;perspective:1400px;cursor:pointer;border-radius:28px}
+.fc-in{position:relative;height:clamp(300px,62vw,400px);transition:transform .55s cubic-bezier(.3,.7,.3,1);transform-style:preserve-3d}
+.fc.flip .fc-in{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:28px;background:var(--card);border:4px solid var(--line);box-shadow:0 8px 0 rgba(0,0,0,.08);display:grid;place-items:center;align-content:center;gap:12px;padding:20px;text-align:center;overflow:auto}
+.fc-front{background:linear-gradient(160deg,var(--card),var(--bg))}
+.fc-back{transform:rotateY(180deg);border-color:var(--sun)}
+.fc-face .flag{max-width:min(380px,82%);box-shadow:0 0 0 1px rgba(0,0,0,.12),0 6px 0 rgba(0,0,0,.1)}
+.fc-back .flag{max-width:150px}
+.fc-name{font-family:Nunito,system-ui,sans-serif;font-weight:900;font-size:clamp(28px,6vw,46px);line-height:1.1;color:var(--sea)}
+.fc-cap{font-size:clamp(18px,3vw,22px)}.fc-cap b{color:var(--ink)}
+.fc-hint{color:var(--soft);font-weight:800;font-size:15px}
+.fc .cont{display:inline-block;background:var(--bg);padding:4px 12px;border-radius:10px;font-weight:800;color:var(--soft);font-size:14px}
+.fc .note{margin:0;font-size:14px;max-width:440px}
+.say{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:14px;padding:10px 16px;min-height:48px;background:var(--sea);color:#fff;font-weight:800;font-size:16px;box-shadow:0 4px 0 var(--sea2)}
+.say svg{width:22px;height:22px;flex:none}
+.say.small{background:var(--card);color:var(--sea);border:2px solid var(--line);box-shadow:none}
+.say.on{animation:pulse .8s infinite}@keyframes pulse{50%{transform:scale(1.06)}}
+.sayrow{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.vnote{background:color-mix(in srgb,var(--sun) 35%,var(--card));border-radius:12px;padding:8px 14px;font-size:14px;font-weight:700;text-align:center;max-width:560px}
+.cnav{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;width:100%}
+.cnav .pill{text-align:center}
+.mark{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.mark .btn{width:100%}.mark .k{background:var(--ok)}.mark .r{background:var(--coral)}
+.cstats{color:var(--soft);font-weight:800;font-size:15px;text-align:center}
+.cempty{padding:40px 20px;text-align:center;font-size:20px;font-weight:800}
+@media(max-width:600px){.ctools{gap:8px}.cnav .btn{padding:10px 14px;font-size:17px}}
+@media(max-width:600px){.top{grid-template-columns:minmax(0,1fr) 84px}.navrow{flex-direction:column-reverse;align-items:stretch}nav{width:100%}.langs{margin:0;justify-content:center}.langs button{flex:1}.bubble{font-size:13px;padding:5px 10px;top:auto;bottom:-8px;right:50%;translate:50% 0;border-radius:14px}nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;margin-bottom:10px}nav button{padding:10px 6px;font-size:16px;line-height:1.15;min-height:48px;border-radius:14px}.opt{min-height:64px;padding-left:52px}.opt .let{width:34px;height:34px}.opt.fl{padding:42px 8px 8px}.ask{grid-template-columns:minmax(0,1fr)}.ask svg.mascot{display:none}.qbar .pill{font-size:15px}}
 @media(max-width:360px){.opts{gap:8px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -161,17 +223,19 @@ footer{color:var(--soft);font-size:14px;text-align:center;padding:0 0 30px}
  <div class="wrap">
   <div class="top">
    <div>
-    <h1 data-t="title">Әлем елдері</h1>
+    <a class="home" href="./" data-ta="home"><h1 data-t="title">Әлем елдері</h1></a>
     <p><span data-t="sub1"></span><br><span data-t="sub2"></span></p>
    </div>
    <div class="gwrap">
     <div class="bubble" data-t="hello">Сәлем!</div>
-    <svg class="hero-globe" viewBox="0 0 200 200" role="img" data-ta="globe"><use href="#globe"/></svg>
+    <a class="home homeglobe" href="./" data-ta="home"><svg class="hero-globe" viewBox="0 0 200 200" aria-hidden="true"><use href="#globe"/></svg></a>
    </div>
   </div>
   <div class="navrow">
    <nav role="tablist">
     <button role="tab" id="tab-list" aria-selected="true" data-t="tabList">Елдер</button>
+    <button role="tab" id="tab-cards" aria-selected="false" data-t="tabCards">Карточкалар</button>
+    <button role="tab" id="tab-puzzle" aria-selected="false" data-t="tabPuzzle">Пазл</button>
     <button role="tab" id="tab-quiz" aria-selected="false" data-t="tabQuiz">Тест ойыны</button>
    </nav>
    <div class="langs" role="group" aria-label="Тіл / Язык / Language">
@@ -190,8 +254,33 @@ footer{color:var(--soft);font-size:14px;text-align:center;padding:0 0 30px}
    <input id="q" class="search" type="search" data-tp="search" data-ta="searchA">
    <span class="count" id="cnt"></span>
   </div>
-  <div class="chips" id="chips"></div>
+  <div class="chips row" id="chips"></div>
   <div class="grid" id="grid"></div>
+ </section>
+
+ <section id="view-cards" class="hidden">
+  <div class="chips row" id="cchips"></div>
+  <div class="ctools">
+   <span class="lbl" data-t="face"></span>
+   <div class="seg" id="cface"><button data-f="flag" aria-pressed="true" data-t="faceFlag"></button><button data-f="name" aria-pressed="false" data-t="faceName"></button></div>
+   <div class="seg" id="cmode"><button data-m="all" aria-pressed="true" data-t="deckAll"></button><button data-m="learn" aria-pressed="false" id="cmlearn"></button></div>
+   <button class="chip" id="cshuf" data-t="shuffle"></button>
+   <label class="tog"><input type="checkbox" id="cauto"><span data-t="auto"></span></label>
+  </div>
+  <div class="cwrap" id="cwrap"></div>
+ </section>
+
+ <section id="view-puzzle" class="hidden">
+  <div class="chips row" id="pchips"></div>
+  <div class="pbar">
+   <span class="lbl" style="font-weight:800;color:var(--soft);font-size:15px" data-t="pzLevel"></span>
+   <div class="seg" id="plevel"><button data-n="2" aria-pressed="false" data-t="lv2"></button><button data-n="3" aria-pressed="true" data-t="lv3"></button><button data-n="4" aria-pressed="false" data-t="lv4"></button></div>
+   <span class="pill" id="pscore"></span><span class="pill" id="psolved"></span>
+  </div>
+  <div class="pstage">
+   <div class="board" id="board"></div>
+   <div class="pside" id="pside"></div>
+  </div>
  </section>
 
  <section id="view-quiz" class="hidden">
@@ -202,7 +291,7 @@ footer{color:var(--soft);font-size:14px;text-align:center;padding:0 0 30px}
     <div id="perr" class="perr hidden" role="alert" data-t="perr"></div>
    </div>
    <div class="set" data-t="s2"></div>
-   <div class="chips" id="qchips"></div>
+   <div class="chips row" id="qchips"></div>
    <div class="set" data-t="s3"></div>
    <div class="chips" id="qnum"></div>
    <div class="set" data-t="s4"></div>
@@ -250,7 +339,7 @@ footer{color:var(--soft);font-size:14px;text-align:center;padding:0 0 30px}
   <div id="q-end" class="stage end hidden"></div>
  </section>
 </main>
-<footer class="wrap"><span data-t="foot1"></span><br><span data-t="foot2"></span></footer>
+<footer class="wrap"><span data-t="foot1"></span><br><span data-t="foot2"></span><span id="foot3" class="hidden"><br><span data-t="foot3"></span></span></footer>
 
 <div class="modal hidden" id="modal" role="dialog" aria-modal="true"><div class="box" id="mbox"></div></div>
 
@@ -647,8 +736,8 @@ TO|Тонга|Нукуалофа|Tonga|Nukuʻalofa
 TV|Тувалу|Фунафути|Tuvalu|Funafuti
 VU|Вануату|Порт-Вила|Vanuatu|Port Vila`;
 const T={
-kk:{title:'Әлем елдері',sub1:'{n} елдің атауы, астанасы және туы.',sub2:'Оқы, үйрен, сосын тестте өзіңді сына!',hello:'Сәлем!',globe:'Күлімдеген глобус',
-tabList:'Елдер',tabQuiz:'Тест ойыны',search:'Елді немесе астананы ізде...',searchA:'Іздеу',capital:'Астанасы',
+kk:{title:'Әлем елдері',sub1:'{n} елдің атауы, астанасы және туы.',sub2:'Оқы, үйрен, сосын тестте өзіңді сына!',hello:'Сәлем!',globe:'Күлімдеген глобус',home:'Басты бетке оралу',
+tabList:'Елдер',tabQuiz:'Тест ойыны',tabCards:'Карточкалар',tabPuzzle:'Пазл',pzLevel:'Деңгей:',lv2:'Оңай',lv3:'Орташа',lv4:'Қиын',pzHow:'Туды жина: екі бөлікті кезекпен бас немесе бір бөлікті екіншісінің үстіне сүйре — олар орын ауыстырады.',moves:'Жүріс: {n}',pzHint:'Көмек',pzSkip:'Басқа ту',pzDone:'Ту жиналды! Енді бұл қай елдің туы екенін тап:',pzNext:'Келесі пазл →',pzSolved:'Жиналған тулар: {n}',face:'Алдыңғы жағы:',faceFlag:'Ту',faceName:'Атауы',deckAll:'Барлығы',deckLearn:'Үйренетіндерім ({n})',shuffle:'Араластыру',auto:'Өзі дауыстап айтсын',cHint:'Карточканы бас — аударылады',cPrev:'← Алдыңғы',cNext:'Келесі →',know:'✓ Білемін',notYet:'Қайталау керек',cStats:'Білемін: {k} · Қайталау керек: {r}',cEmpty:'Керемет! Бұл бөлімдегі барлық елді білесің.',cReset:'Белгілерді тазалау',sayName:'Атын тыңдау',sayCap:'Астанасын тыңдау',noVoice:'Бұл браузерде қазақша дауыс табылмады. Қазақша тыңдау үшін сайтты Microsoft Edge браузерінде ашыңыз.',noSpeech:'Бұл браузер мәтінді дауыстап оқи алмайды.',search:'Елді немесе астананы ізде...',searchA:'Іздеу',capital:'Астанасы',
 empty:'Ондай ел табылмады. Басқаша жазып көр!',close:'Жабу',flag:'Ту',
 c_all:'Барлығы',c_as:'Азия',c_eu:'Еуропа',c_af:'Африка',c_na:'Солтүстік Америка',c_sa:'Оңтүстік Америка',c_oc:'Аустралия және Мұхит елдері',
 fLoad:'Тулар жүктелуде...',fFail:'Тулар жүктелмеді. Интернетті тексеріп, бетті жаңартыңыз.',fNo:'Ту жүктелмеді',
@@ -662,11 +751,11 @@ player:'Ойыншы: {n}',points:'Ұпай: {n}',streak:'Қатарынан: {n
 praise:['Жарайсың, {n}!','Керемет!','Тамаша, {n}!','Дұрыс!','Мықтысың!'],isC:'Бұл — {c}.',capOf:'Астанасы: {c}',wrong:'Қате. Дұрыс жауап: {l} — {c}',
 end:['{n}, тағы байқап көр!','{n}, жақсы бастама!','Өте жақсы, {n}!','{n}, сен — нағыз саяхатшысың!'],
 sum:'{t} сұрақтың {o}-не дұрыс жауап бердің. Қатарынан ең көбі: {b}',rank:'Ұпай: {p} · Орның: {r}',rec:' · Жаңа рекорд!',
-again:'Қайта ойнау',menu:'Басқа тест таңдау',review:'Мына елдерді қайталап ал:',
-foot1:'Пернетақтада: 1–4 немесе A–D пернелері жауап таңдайды, Enter — келесі сұрақ.',
+sv_send:'Нәтиже кестеге жіберіліп жатыр...',sv_ok:'✓ Нәтиже Google кестесіне сақталды',sv_fail:'✗ Нәтиже Google кестесіне сақталмады. Мұғалімге айт.',sv_local:'Нәтиже тек осы құрылғыда сақталды (кесте сілтемесі қойылмаған).',again:'Қайта ойнау',menu:'Басқа тест таңдау',review:'Мына елдерді қайталап ал:',
+foot3:'Дауыстар ElevenLabs арқылы жасалған (<a href="https://elevenlabs.io">elevenlabs.io</a>).',foot1:'Пернетақтада: тестте 1–4 немесе A–D пернелері жауап таңдайды, Enter — келесі сұрақ; карточкаларда ← → — ауыстыру, Бос орын — аудару.',
 foot2:'Дереккөздер: тулар — Flag Icons жинағы (авторы Panayiotis Lipiridis, <a href="https://flagicons.lipis.dev">flagicons.lipis.dev</a>), барлық тулар бірдей 4:3 пішінде көрсетілген. Елдер тізімі — БҰҰ-ның 193 мүшесі және 2 бақылаушы мемлекет (Ватикан, Палестина). Астаналар 2026 жылғы қарашадағы ресми деректер бойынша.'},
-ru:{title:'Страны мира',sub1:'Названия, столицы и флаги {n} стран.',sub2:'Читай, учись, а потом проверь себя в тесте!',hello:'Привет!',globe:'Улыбающийся глобус',
-tabList:'Страны',tabQuiz:'Игра-тест',search:'Найди страну или столицу...',searchA:'Поиск',capital:'Столица',
+ru:{title:'Страны мира',sub1:'Названия, столицы и флаги {n} стран.',sub2:'Читай, учись, а потом проверь себя в тесте!',hello:'Привет!',globe:'Улыбающийся глобус',home:'Вернуться на главную',
+tabList:'Страны',tabQuiz:'Игра-тест',tabCards:'Карточки',tabPuzzle:'Пазл',pzLevel:'Уровень:',lv2:'Легко',lv3:'Средне',lv4:'Сложно',pzHow:'Собери флаг: нажми на две части по очереди или перетащи одну часть на другую — они поменяются местами.',moves:'Ходы: {n}',pzHint:'Подсказка',pzSkip:'Другой флаг',pzDone:'Флаг собран! Теперь угадай, чей это флаг:',pzNext:'Следующий пазл →',pzSolved:'Собрано флагов: {n}',face:'Лицевая сторона:',faceFlag:'Флаг',faceName:'Название',deckAll:'Все',deckLearn:'Повторить ({n})',shuffle:'Перемешать',auto:'Озвучивать сразу',cHint:'Нажми на карточку — она перевернётся',cPrev:'← Назад',cNext:'Дальше →',know:'✓ Знаю',notYet:'Нужно повторить',cStats:'Знаю: {k} · Нужно повторить: {r}',cEmpty:'Отлично! Ты знаешь все страны этого раздела.',cReset:'Сбросить отметки',sayName:'Послушать название',sayCap:'Послушать столицу',noVoice:'В этом браузере не найден русский голос. Откройте сайт в Microsoft Edge или Google Chrome.',noSpeech:'Этот браузер не умеет читать текст вслух.',search:'Найди страну или столицу...',searchA:'Поиск',capital:'Столица',
 empty:'Такая страна не найдена. Попробуй написать по-другому!',close:'Закрыть',flag:'Флаг',
 c_all:'Все',c_as:'Азия',c_eu:'Европа',c_af:'Африка',c_na:'Северная Америка',c_sa:'Южная Америка',c_oc:'Австралия и Океания',
 fLoad:'Флаги загружаются...',fFail:'Флаги не загрузились. Проверьте интернет и обновите страницу.',fNo:'Флаг не загрузился',
@@ -680,11 +769,11 @@ player:'Игрок: {n}',points:'Очки: {n}',streak:'Подряд: {n}',quit:
 praise:['Молодец, {n}!','Отлично!','Супер, {n}!','Верно!','Так держать!'],isC:'Это {c}.',capOf:'Столица: {c}',wrong:'Неверно. Правильный ответ: {l} — {c}',
 end:['{n}, попробуй ещё раз!','{n}, хорошее начало!','Очень хорошо, {n}!','{n}, ты отлично знаешь страны мира!'],
 sum:'Правильных ответов: {o} из {t}. Больше всего подряд: {b}',rank:'Очки: {p} · Твоё место: {r}',rec:' · Новый рекорд!',
-again:'Играть ещё раз',menu:'Выбрать другой тест',review:'Повтори эти страны:',
-foot1:'На клавиатуре: клавиши 1–4 или A–D выбирают ответ, Enter — следующий вопрос.',
+sv_send:'Результат отправляется в таблицу...',sv_ok:'✓ Результат сохранён в таблице Google',sv_fail:'✗ Результат не сохранился в таблице Google. Скажи учителю.',sv_local:'Результат сохранён только на этом устройстве (ссылка на таблицу не указана).',again:'Играть ещё раз',menu:'Выбрать другой тест',review:'Повтори эти страны:',
+foot3:'Голоса созданы с помощью ElevenLabs (<a href="https://elevenlabs.io">elevenlabs.io</a>).',foot1:'На клавиатуре: в тесте клавиши 1–4 или A–D выбирают ответ, Enter — следующий вопрос; в карточках ← → — листать, Пробел — перевернуть.',
 foot2:'Источники: флаги — коллекция Flag Icons (автор Panayiotis Lipiridis, <a href="https://flagicons.lipis.dev">flagicons.lipis.dev</a>), все флаги показаны в одинаковой пропорции 4:3. Список стран — 193 государства — члена ООН и 2 государства-наблюдателя (Ватикан, Палестина). Столицы — по официальным данным на ноябрь 2026 года.'},
-en:{title:'Countries of the World',sub1:'Names, capitals and flags of {n} countries.',sub2:'Read, learn, then test yourself in the quiz!',hello:'Hello!',globe:'Smiling globe',
-tabList:'Countries',tabQuiz:'Quiz game',search:'Search for a country or capital...',searchA:'Search',capital:'Capital',
+en:{title:'Countries of the World',sub1:'Names, capitals and flags of {n} countries.',sub2:'Read, learn, then test yourself in the quiz!',hello:'Hello!',globe:'Smiling globe',home:'Back to the home page',
+tabList:'Countries',tabQuiz:'Quiz game',tabCards:'Flashcards',tabPuzzle:'Puzzle',pzLevel:'Level:',lv2:'Easy',lv3:'Medium',lv4:'Hard',pzHow:'Put the flag together: tap two pieces one after another, or drag one piece onto another, to swap them.',moves:'Moves: {n}',pzHint:'Hint',pzSkip:'Another flag',pzDone:'The flag is complete! Now find which country it belongs to:',pzNext:'Next puzzle →',pzSolved:'Flags completed: {n}',face:'Front side:',faceFlag:'Flag',faceName:'Name',deckAll:'All',deckLearn:'To learn ({n})',shuffle:'Shuffle',auto:'Read aloud automatically',cHint:'Tap the card to flip it',cPrev:'← Back',cNext:'Next →',know:'✓ I know it',notYet:'Need practice',cStats:'I know: {k} · Need practice: {r}',cEmpty:'Great! You know every country in this section.',cReset:'Reset marks',sayName:'Hear the name',sayCap:'Hear the capital',noVoice:'No English voice was found in this browser. Open the site in Microsoft Edge or Google Chrome.',noSpeech:'This browser cannot read text aloud.',search:'Search for a country or capital...',searchA:'Search',capital:'Capital',
 empty:'No country found. Try spelling it differently!',close:'Close',flag:'Flag',
 c_all:'All',c_as:'Asia',c_eu:'Europe',c_af:'Africa',c_na:'North America',c_sa:'South America',c_oc:'Australia and Oceania',
 fLoad:'Loading flags...',fFail:'The flags did not load. Check your internet connection and refresh the page.',fNo:'Flag not loaded',
@@ -698,8 +787,8 @@ player:'Player: {n}',points:'Points: {n}',streak:'In a row: {n}',quit:'Exit',q1:
 praise:['Well done, {n}!','Excellent!','Great job, {n}!','Correct!','Awesome!'],isC:'This is {c}.',capOf:'Capital: {c}',wrong:'Not quite. The right answer is {l} — {c}',
 end:['{n}, give it another try!','{n}, good start!','Very good, {n}!','{n}, you are a true traveller!'],
 sum:'You got {o} out of {t} right. Longest streak: {b}',rank:'Points: {p} · Your place: {r}',rec:' · New record!',
-again:'Play again',menu:'Choose another quiz',review:'Review these countries:',
-foot1:'Keyboard: press 1–4 or A–D to answer, Enter for the next question.',
+sv_send:'Sending your result to the spreadsheet...',sv_ok:'✓ Result saved to the Google spreadsheet',sv_fail:'✗ The result was not saved to the Google spreadsheet. Tell your teacher.',sv_local:'Result saved only on this device (no spreadsheet link set).',again:'Play again',menu:'Choose another quiz',review:'Review these countries:',
+foot3:'Voices generated with ElevenLabs (<a href="https://elevenlabs.io">elevenlabs.io</a>).',foot1:'Keyboard: in the quiz press 1–4 or A–D to answer and Enter for the next question; in flashcards use ← → to move and Space to flip.',
 foot2:'Sources: flags — the Flag Icons collection (by Panayiotis Lipiridis, <a href="https://flagicons.lipis.dev">flagicons.lipis.dev</a>); all flags are shown in the same 4:3 shape. Country list — the 193 UN member states and 2 observer states (Vatican City, Palestine). Capitals as of official data, November 2026.'}};
 const NOTES={
 GQ:{ru:'Стала столицей указом президента 2 января 2026 года. Прежняя столица — Малабо.',en:'Became the capital by presidential decree on 2 January 2026. The former capital was Malabo.'},
@@ -739,8 +828,8 @@ const flagInner=c=>SET?svgOf(c):flagState==='fail'?`<small>${t('fNo')}</small>`:
 const flag=(c,cls='')=>`<span class="flag ${cls}" data-c="${c}" role="img" aria-label="${t('flag')}">${flagInner(c)}</span>`;
 const refreshFlags=()=>document.querySelectorAll('.flag[data-c]').forEach(e=>e.innerHTML=flagInner(e.dataset.c));
 const fstat=()=>{const f=$('fstat');f.classList.toggle('hidden',flagState==='ok'&&!f.dataset.force);f.classList.toggle('err',flagState==='fail');f.textContent=flagState==='fail'?t('fFail'):t('fLoad')};
-const flagsReady=import('https://cdn.jsdelivr.net/npm/@iconify-json/flag@1.2.15/+esm').then(m=>{SET=m.icons;flagState='ok';refreshFlags();fstat()})
- .catch(()=>{flagState='fail';refreshFlags();fstat()});
+const flagsReady=import('https://cdn.jsdelivr.net/npm/@iconify-json/flag@1.2.15/+esm').then(m=>{SET=m.icons;flagState='ok';refreshFlags();fstat();if(typeof PZ!=='undefined'&&PZ)renderPuzzle()})
+ .catch(()=>{flagState='fail';refreshFlags();fstat();if(typeof PZ!=='undefined'&&PZ)renderPuzzle()});
 
 /* Тізім */
 let cont='all';
@@ -754,13 +843,122 @@ const renderList=()=>{const q=$('q').value.trim().toLowerCase(),cl=coll();
 $('q').addEventListener('input',renderList);
 $('grid').onclick=e=>{const b=e.target.closest('.cc');if(b)openCard(b.dataset.c)};
 let openC=null;
-const openCard=c=>{openC=c;const x=byC[c];$('mbox').innerHTML=`<button class="x" id="mx" aria-label="${t('close')}">×</button>${flag(c)}<h2>${esc(N(x))}</h2><div class="cap">${t('capital')}: <b>${esc(CAP(x))}</b></div><div class="cont">${t('c_'+x.k)}</div>${NT(x)?`<p class="note">${esc(NT(x))}</p>`:''}`;$('modal').classList.remove('hidden');$('mx').focus()};
-const closeModal=()=>{openC=null;$('modal').classList.add('hidden')};
-$('modal').onclick=e=>{if(e.target.id==='modal'||e.target.id==='mx')closeModal()};
+/* Дыбыстау: браузердің SpeechSynthesis дауыстары. Таңдалған тілдің дауысы жоқ болса, басқа тілдің дауысымен оқымаймыз. */
+const VL={kk:'kk-KZ',ru:'ru-RU',en:'en-US'};
+const hasTTS='speechSynthesis' in window&&'SpeechSynthesisUtterance' in window;
+let voices=[];
+const loadVoices=()=>{try{voices=speechSynthesis.getVoices()||[]}catch(e){voices=[]}};
+if(hasTTS){loadVoices();try{speechSynthesis.addEventListener('voiceschanged',()=>{loadVoices();voiceNotes()})}catch(e){}}
+const pickVoice=l=>{const ok=voices.filter(v=>{const lg=(v.lang||'').toLowerCase().replace('_','-');return lg.startsWith(l)||(l==='kk'&&/kazakh|қазақ/i.test(v.name))});
+ if(!ok.length)return null;const sc=v=>(/natural|neural|online/i.test(v.name)?4:0)+(/google/i.test(v.name)?2:0)+((v.lang||'').toLowerCase().replace('_','-')===VL[l].toLowerCase()?1:0);
+ return ok.sort((a,b)=>sc(b)-sc(a))[0]};
+const voiceMsg=()=>SHEETS_URL?'':!hasTTS?t('noSpeech'):voices.length&&!pickVoice(L)?t('noVoice'):'';
+const noteAll=m=>document.querySelectorAll('[data-vnote]').forEach(n=>{n.textContent=m;n.classList.toggle('hidden',!m)});
+const voiceNotes=()=>document.querySelectorAll('[data-vnote]').forEach(n=>{const m=voiceMsg();n.textContent=m;n.classList.toggle('hidden',!m)});
+let sayingBtn=null;
+const stopSpeak=()=>{try{if(hasTTS)speechSynthesis.cancel()}catch(e){}try{AU.pause()}catch(e){}if(sayingBtn){sayingBtn.classList.remove('on');sayingBtn=null}};
+const speak=(text,btn)=>{if(!hasTTS){noteAll(t('noSpeech'));return}loadVoices();const v=pickVoice(L);
+ if(!v&&(voices.length||L==='kk')){noteAll(t('noVoice'));return}
+ stopSpeak();const u=new SpeechSynthesisUtterance(text);u.lang=VL[L];if(v)u.voice=v;u.rate=.85;u.pitch=1;
+ if(btn){sayingBtn=btn;btn.classList.add('on');u.onend=u.onerror=()=>{btn.classList.remove('on');if(sayingBtn===btn)sayingBtn=null}}
+ try{speechSynthesis.speak(u)}catch(e){voiceNotes()}};
+const SPK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16 8.5a4.5 4.5 0 0 1 0 7M18.5 6a8 8 0 0 1 0 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>';
+const sayBtns=c=>`<button class="say" data-say="n" data-c="${c}">${SPK}${t('sayName')}</button><button class="say small" data-say="c" data-c="${c}">${SPK}${t('sayCap')}</button>`;
+/* ElevenLabs дауыстары: Google Apps Script (Code.gs) арқылы келеді, кілт сайтта жоқ. Болмаса — браузер дауысы. */
+const AU=new Audio();AU.preload='auto';const AUD={};let auUnlocked=false;
+const SILENT='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA=';
+document.addEventListener('pointerdown',()=>{if(auUnlocked)return;auUnlocked=true;try{AU.src=SILENT;AU.play().catch(()=>{})}catch(e){}},{capture:true});
+const playB64=(b64,btn)=>{AU.onended=AU.onerror=()=>{if(btn)btn.classList.remove('on')};AU.src='data:audio/mpeg;base64,'+b64;if(btn){sayingBtn=btn;btn.classList.add('on')}AU.play().catch(()=>{if(btn)btn.classList.remove('on')})};
+const speakId=(c,kind,btn)=>{const x=byC[c];if(!x)return;const text=kind==='c'?CAP(x):N(x);noteAll('');
+ if(!SHEETS_URL){speak(text,btn);return}
+ stopSpeak();const lang=L,key=lang+'|'+c+'-'+kind;
+ if(AUD[key]){playB64(AUD[key],btn);return}
+ if(btn){sayingBtn=btn;btn.classList.add('on')}const mine=btn;
+ fetch(SHEETS_URL+'?tts='+lang+'&id='+encodeURIComponent(c+'-'+kind)).then(r=>r.json()).then(d=>{if(!d||!d.ok||!d.b64)throw new Error(d&&d.error);AUD[key]=d.b64;if(sayingBtn===mine&&L===lang)playB64(d.b64,mine)})
+  .catch(()=>{if(mine)mine.classList.remove('on');if(sayingBtn===mine&&L===lang)speak(text,mine)})};
+const sayIt=b=>speakId(b.dataset.c,b.dataset.say==='c'?'c':'n',b);
+
+/* Карточкалар */
+let known=new Set(),again=new Set();
+try{known=new Set(JSON.parse(localStorage.getItem('alem-known')||'[]'));again=new Set(JSON.parse(localStorage.getItem('alem-again')||'[]'))}catch(e){}
+const saveMarks=()=>{try{localStorage.setItem('alem-known',JSON.stringify([...known]));localStorage.setItem('alem-again',JSON.stringify([...again]))}catch(e){}};
+let cc='all',cface='flag',cmode='all',corder=null,cidx=0,cflip=false,cauto=false;
+try{cauto=localStorage.getItem('alem-auto')==='1'}catch(e){}
+$('cauto').checked=cauto;
+const deck=()=>{let d=C.filter(x=>cc==='all'||x.k===cc);if(cmode==='learn')d=d.filter(x=>!known.has(x.c));
+ if(corder){const o=new Map(corder.map((c,i)=>[c,i]));d.sort((a,b)=>o.get(a.c)-o.get(b.c))}else{const cl=coll();d.sort((a,b)=>cl.compare(N(a),N(b)))}return d};
+const renderCards=(speakNow)=>{const d=deck(),base=C.filter(x=>cc==='all'||x.k===cc);
+ $('cmlearn').textContent=t('deckLearn',{n:base.filter(x=>!known.has(x.c)).length});
+ const kn=base.filter(x=>known.has(x.c)).length,rp=base.filter(x=>again.has(x.c)).length;
+ if(!d.length){$('cwrap').innerHTML=`<div class="cempty">${t('cEmpty')}</div><div class="cstats">${t('cStats',{k:kn,r:rp})}</div><button class="chip" id="creset">${t('cReset')}</button>`;return}
+ if(cidx>=d.length)cidx=0;if(cidx<0)cidx=d.length-1;const x=d[cidx];
+ const front=cface==='flag'?`${flag(x.c)}<div class="fc-hint">${t('cHint')}</div>`:`<div class="fc-name">${esc(N(x))}</div><div class="fc-hint">${t('cHint')}</div>`;
+ const back=`${flag(x.c)}<div class="fc-name">${esc(N(x))}</div><div class="fc-cap">${t('capital')}: <b>${esc(CAP(x))}</b></div><span class="cont">${t('c_'+x.k)}</span>${NT(x)?`<p class="note">${esc(NT(x))}</p>`:''}`;
+ $('cwrap').innerHTML=`<div class="fc${cflip?' flip':''}" id="fc" tabindex="0" role="button" aria-label="${t('cHint')}"><div class="fc-in"><div class="fc-face fc-front" aria-hidden="${cflip}">${front}</div><div class="fc-face fc-back" aria-hidden="${!cflip}">${back}</div></div></div>
+  <div class="sayrow">${sayBtns(x.c)}</div><div class="vnote hidden" data-vnote></div>
+  <div class="cnav"><button class="btn alt" id="cprev">${t('cPrev')}</button><span class="pill">${cidx+1} / ${d.length}</span><button class="btn alt" id="cnext">${t('cNext')}</button></div>
+  <div class="mark"><button class="btn r" id="cagain">${t('notYet')}</button><button class="btn k" id="cknow">${t('know')}</button></div>
+  <div class="cstats">${t('cStats',{k:kn,r:rp})}</div><button class="chip" id="creset">${t('cReset')}</button>`;
+ voiceNotes();
+ if(speakNow&&cauto&&(cflip||cface==='name'))speakId(x.c,'n',document.querySelector('#cwrap .say'))};
+const flipCard=()=>{const f=$('fc');if(!f)return;cflip=!cflip;f.classList.toggle('flip',cflip);f.querySelector('.fc-front').setAttribute('aria-hidden',cflip);f.querySelector('.fc-back').setAttribute('aria-hidden',!cflip);
+ if(cflip&&cauto){const d=deck();if(d[cidx])speakId(d[cidx].c,'n',document.querySelector('#cwrap .say'))}};
+const goCard=st=>{stopSpeak();cidx+=st;cflip=false;renderCards(true)};
+const markCard=k=>{const d=deck(),x=d[cidx];if(!x)return;if(k){known.add(x.c);again.delete(x.c)}else{again.add(x.c);known.delete(x.c)}saveMarks();stopSpeak();cflip=false;if(!(k&&cmode==='learn'))cidx++;renderCards(true)};
+$('cwrap').onclick=e=>{const b=e.target.closest('button');
+ if(b){if(b.classList.contains('say'))sayIt(b);else if(b.id==='cprev')goCard(-1);else if(b.id==='cnext')goCard(1);else if(b.id==='cknow')markCard(true);else if(b.id==='cagain')markCard(false);
+  else if(b.id==='creset'){known.clear();again.clear();saveMarks();cidx=0;cflip=false;renderCards()}return}
+ if(e.target.closest('#fc'))flipCard()};
+$('cface').onclick=e=>{const b=e.target.closest('button');if(!b)return;cface=b.dataset.f;$('cface').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));cflip=false;renderCards(true)};
+$('cmode').onclick=e=>{const b=e.target.closest('button');if(!b)return;cmode=b.dataset.m;$('cmode').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));cidx=0;cflip=false;renderCards()};
+$('cshuf').onclick=()=>{corder=shuffleC(C.map(x=>x.c));cidx=0;cflip=false;renderCards(true)};
+$('cauto').onchange=()=>{cauto=$('cauto').checked;try{localStorage.setItem('alem-auto',cauto?'1':'0')}catch(e){}};
+const shuffleC=a=>{a=a.slice();for(let j=a.length-1;j>0;j--){const r=Math.random()*(j+1)|0;[a[j],a[r]]=[a[r],a[j]]}return a};
+
+/* Пазл: ту бөліктерге бөлінеді, екі бөлікті ауыстыра отырып жинайды, сосын 4 елдің ішінен табады */
+let PZ=null,pc_='all',pn=3,pScore=0,pSolved=0,pSel=null;
+const newPuzzle=()=>{const pool=C.filter(x=>pc_==='all'||x.k===pc_);const a=pool[Math.random()*pool.length|0];
+ const n=pn*pn;let ord;do{ord=shuffleC([...Array(n).keys()])}while(ord.every((v,i)=>v===i));
+ PZ={a,ord,moves:0,solved:false,picked:null,opts:shuffleC([a,...shuffleC(pool.filter(x=>x!==a)).slice(0,3)]),pi:Math.random()*5|0};pSel=null;renderPuzzle()};
+const pzSolvedNow=()=>PZ.ord.every((v,i)=>v===i);
+const renderBoard=()=>{const b=$('board');const n=pn;b.style.gridTemplateColumns=`repeat(${n},minmax(0,1fr))`;b.classList.toggle('done',PZ.solved);
+ const svg=SET?svgOf(PZ.a.c):'';
+ b.innerHTML=PZ.ord.map((piece,slot)=>{const r=piece/n|0,c=piece%n;
+  return `<div class="pc${piece===slot?' okp':''}${pSel===slot?' sel':''}" data-s="${slot}">${svg.replace('<svg ',`<svg preserveAspectRatio="none" style="width:${n*100}%;height:${n*100}%;left:${-c*100}%;top:${-r*100}%" `)}</div>`}).join('')};
+const renderPuzzle=()=>{if(!PZ)return;$('pscore').textContent=t('points',{n:pScore});$('psolved').textContent=t('pzSolved',{n:pSolved});
+ if(flagState!=='ok'){$('board').innerHTML='';$('pside').innerHTML=`<p class="how">${flagState==='fail'?t('fFail'):t('fLoad')}</p>`;return}
+ renderBoard();const right=PZ.opts.indexOf(PZ.a);
+ if(!PZ.solved){$('pside').innerHTML=`<p class="how">${t('pzHow')}</p><span class="pill">${t('moves',{n:PZ.moves})}</span><div class="pacts"><button class="btn alt" id="phint">${t('pzHint')}</button><button class="btn alt" id="pskip">${t('pzSkip')}</button></div>`;return}
+ let fb='';
+ if(PZ.picked!=null){fb=PZ.picked===right?`<div class="fb"><span class="good">${esc(fill(T[L].praise[PZ.pi],{n:player||''}).replace(/,\s*!/,'!'))} ${esc(t('isC',{c:N(PZ.a)}))} ${esc(t('capOf',{c:CAP(PZ.a)}))}</span></div>`:`<div class="fb"><span class="oops">${esc(t('wrong',{l:'ABCD'[right],c:N(PZ.a)}))}</span></div>`;
+  fb+=`<div class="sayrow" style="justify-content:flex-start">${sayBtns(PZ.a.c)}</div><div class="vnote hidden" data-vnote></div><button class="btn" id="pnext">${t('pzNext')}</button>`}
+ $('pside').innerHTML=`<div class="pq"><div class="lbl">${t('pzDone')}</div><div class="opts">${PZ.opts.map((o,k)=>`<button class="opt${PZ.picked!=null&&k===right?' ok':''}${PZ.picked===k&&k!==right?' no':''}" data-k="${k}" ${PZ.picked!=null?'disabled':''}><span class="let">${'ABCD'[k]}</span>${esc(N(o))}</button>`).join('')}</div>${fb}</div><span class="pill">${t('moves',{n:PZ.moves})}</span>`;
+ voiceNotes()};
+const pzSwap=(i,j)=>{if(PZ.solved||i===j)return;[PZ.ord[i],PZ.ord[j]]=[PZ.ord[j],PZ.ord[i]];PZ.moves++;pSel=null;
+ if(pzSolvedNow()){PZ.solved=true;beep(1);confetti()}renderPuzzle()};
+let pDown=null;
+$('board').addEventListener('pointerdown',e=>{const pcE=e.target.closest('.pc');if(!pcE||PZ.solved)return;e.preventDefault();pDown=+pcE.dataset.s;try{$('board').releasePointerCapture(e.pointerId)}catch(_){}});
+document.addEventListener('pointerup',e=>{if(pDown==null)return;const from=pDown;pDown=null;const el=document.elementFromPoint(e.clientX,e.clientY);const pcE=el&&el.closest&&el.closest('#board .pc');
+ if(!pcE)return;const to=+pcE.dataset.s;
+ if(to!==from){pzSwap(from,to);return}
+ if(pSel==null){pSel=from;renderBoard()}else if(pSel===from){pSel=null;renderBoard()}else pzSwap(pSel,from)});
+$('pside').onclick=e=>{const b=e.target.closest('button');if(!b)return;
+ if(b.id==='pskip'){stopSpeak();newPuzzle()}
+ else if(b.id==='pnext'){stopSpeak();newPuzzle()}
+ else if(b.id==='phint'){const i=PZ.ord.findIndex((v,k)=>v!==k);if(i>=0){const j=PZ.ord.indexOf(i);pzSwap(i,j)}}
+ else if(b.classList.contains('say'))sayIt(b);
+ else if(b.classList.contains('opt')&&PZ.picked==null){PZ.picked=+b.dataset.k;const ok=PZ.opts[PZ.picked]===PZ.a;
+  if(ok){pScore+=10;pSolved++;beep(1);confetti()}else{beep(0)}renderPuzzle();if(ok&&cauto)speakId(PZ.a.c,'n',document.querySelector('#pside .say'))}};
+$('plevel').onclick=e=>{const b=e.target.closest('button');if(!b)return;pn=+b.dataset.n;$('plevel').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));newPuzzle()};
+const openCard=c=>{openC=c;const x=byC[c];$('mbox').innerHTML=`<button class="x" id="mx" aria-label="${t('close')}">×</button>${flag(c)}<h2>${esc(N(x))}</h2><div class="cap">${t('capital')}: <b>${esc(CAP(x))}</b></div><div class="cont">${t('c_'+x.k)}</div>${NT(x)?`<p class="note">${esc(NT(x))}</p>`:''}<div class="sayrow" style="margin-top:14px">${sayBtns(c)}</div><div class="vnote hidden" data-vnote></div>`;$('modal').classList.remove('hidden');$('mx').focus()};
+const closeModal=()=>{openC=null;stopSpeak();$('modal').classList.add('hidden')};
+$('modal').onclick=e=>{const sb=e.target.closest('.say');if(sb){sayIt(sb);return}if(e.target.id==='modal'||e.target.id==='mx')closeModal()};
 
 /* Бөлімдер */
-const show=v=>{['list','quiz'].forEach(n=>{$('view-'+n).classList.toggle('hidden',n!==v);$('tab-'+n).setAttribute('aria-selected',n===v)})};
-$('tab-list').onclick=()=>show('list');$('tab-quiz').onclick=()=>show('quiz');
+const show=v=>{if(v!=='cards')stopSpeak();['list','cards','puzzle','quiz'].forEach(n=>{$('view-'+n).classList.toggle('hidden',n!==v);$('tab-'+n).setAttribute('aria-selected',n===v)})};
+$('tab-list').onclick=()=>show('list');$('tab-cards').onclick=()=>{show('cards');renderCards()};$('tab-puzzle').onclick=()=>{show('puzzle');if(!PZ)newPuzzle();else renderPuzzle()};
+const goHome=e=>{e.preventDefault();closeModal();show('list');$('q').value='';cont='all';$('chips').querySelectorAll('.chip').forEach(x=>x.setAttribute('aria-pressed',x.dataset.k==='all'));renderList();window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'})};
+document.querySelectorAll('.home').forEach(a=>a.addEventListener('click',goHome));$('tab-quiz').onclick=()=>show('quiz');
 
 /* Тест */
 let qc='all',qN=10,mode=1,Q=[],i=0,score=0,streak=0,best=0,wrong=[],locked=false,endRes=null;
@@ -803,13 +1001,14 @@ const cmp=(a,b)=>b.pts-a.pts||b.pct-a.pct||b.best-a.best||a.t-b.t;
 const key=n=>String(n).toLocaleLowerCase('kk');
 /* Google Sheets: Apps Script веб-қосымшасының сілтемесін осында қойыңыз (бос болса, нәтижелер тек осы құрылғыда сақталады) */
 const SHEETS_URL='';
-let RB=null,where='wLocal';
+let RB=null,where='wLocal',save='';
 const sorted=m=>(RB||LB).filter(r=>r.m===m).sort(cmp);
 const upsert=(arr,r)=>{const old=arr.find(x=>x.m===r.m&&key(x.n)===key(r.n));if(!old){arr.push(r);return true}if(cmp(r,old)<0){Object.assign(old,r);return true}return false};
 const takeRemote=d=>{if(d&&d.top){RB=[...(d.top[1]||[]),...(d.top[2]||[])];where='wSheets';$('lbclear').classList.add('hidden');renderLB();const el=$('endlb');if(el)el.innerHTML=lbRows(mode,player)}};
 const loadRemote=()=>{if(!SHEETS_URL)return;fetch(SHEETS_URL).then(r=>r.json()).then(takeRemote).catch(()=>{where='wFail';renderLB()})};
-const post=r=>fetch(SHEETS_URL,{method:'POST',body:JSON.stringify({...r,cont:T.kk['c_'+qc],lang:L})}).then(x=>x.json()).then(takeRemote);
-const record=r=>{let rec;if(RB){rec=upsert(RB,r);post(r).catch(()=>{upsert(LB,r);saveLB()})}
+const setSave=v=>{save=v;const el=$('savest');if(el){el.className='savest '+v;el.textContent=t('sv_'+v)}};
+const post=r=>{setSave('send');return fetch(SHEETS_URL,{method:'POST',body:JSON.stringify({...r,cont:T.kk['c_'+qc],lang:L})}).then(x=>x.json()).then(d=>{if(!d||!d.ok)throw new Error(d&&d.error||'bad');setSave('ok');takeRemote(d)}).catch(e=>{setSave('fail');throw e})};
+const record=r=>{let rec;if(!SHEETS_URL)save='local';if(RB){rec=upsert(RB,r);post(r).catch(()=>{upsert(LB,r);saveLB()})}
  else{rec=upsert(LB,r);saveLB();if(SHEETS_URL)post(r).catch(()=>{})}
  renderLB();return{rank:sorted(r.m).findIndex(x=>key(x.n)===key(r.n))+1,rec}};
 const lbRows=(m,me)=>{const rows=sorted(m).slice(0,10);if(!rows.length)return `<li><span class="rk">–</span><b>${t('lbEmpty')}</b></li>`;
@@ -826,6 +1025,7 @@ const renderEnd=()=>{if(!endRes)return;const{s,res}=endRes;
  $('q-end').innerHTML=`<svg class="hero-globe" viewBox="0 0 200 200" aria-hidden="true"><use href="#globe"/></svg><div class="stars">${[0,1,2].map(k=>`<span class="${k<s?'':'off'}">★</span>`).join('')}</div><h2>${esc(fill(T[L].end[s],{n:player}))}</h2>
  <div style="font-size:21px;font-weight:700">${esc(t('sum',{t:Q.length,o:score,b:best}))}</div>
  <div class="rank">${esc(t('rank',{p:score*10,r:res.rank}))}${res.rec?t('rec'):''}</div>
+ <div id="savest" class="savest ${save}">${save?t('sv_'+save):''}</div>
  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center"><button class="btn" id="again">${t('again')}</button><button class="btn alt" id="menu">${t('menu')}</button></div>
  ${wrong.length?`<div class="set">${t('review')}</div><div class="review">${wrong.map(x=>`<div class="rv">${flag(x.c)}<div><b>${esc(N(x))}</b><span>${t('capital')}: ${esc(CAP(x))}</span></div></div>`).join('')}</div>`:''}
  <div class="set">${t('lbTitle')} — ${t(mode===1?'lb1':'lb2')}</div><ol class="lb" id="endlb">${lbRows(mode,player)}</ol>`;
@@ -838,15 +1038,19 @@ const applyLang=()=>{document.documentElement.lang=L;document.title=t('title');
  document.querySelectorAll('[data-ta]').forEach(e=>e.setAttribute('aria-label',t(e.dataset.ta)));
  document.querySelectorAll('.langs button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.lang===L));
  const bub=document.querySelector('.bubble');bub.classList.remove('wave');void bub.offsetWidth;bub.classList.add('wave');
- chipRow($('chips'),()=>cont,k=>{cont=k;renderList()});chipRow($('qchips'),()=>qc,k=>qc=k);renderQnum();
+ chipRow($('chips'),()=>cont,k=>{cont=k;renderList()});chipRow($('qchips'),()=>qc,k=>qc=k);chipRow($('pchips'),()=>pc_,k=>{pc_=k;newPuzzle()});chipRow($('cchips'),()=>cc,k=>{cc=k;cidx=0;cflip=false;renderCards()});renderQnum();stopSpeak();renderCards();renderPuzzle();
  fstat();renderList();renderLB();refreshFlags();
  if(openC)openCard(openC);
  if(!$('q-play').classList.contains('hidden'))renderQ();
  if(!$('q-end').classList.contains('hidden'))renderEnd()};
 document.querySelector('.langs').onclick=e=>{const b=e.target.closest('button');if(!b||b.dataset.lang===L)return;L=b.dataset.lang;try{localStorage.setItem('alem-lang',L)}catch(e){}applyLang()};
-applyLang();loadRemote();
+applyLang();loadRemote();$('foot3').classList.toggle('hidden',!SHEETS_URL);
 
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();if($('q-play').classList.contains('hidden')||e.target.tagName==='INPUT')return;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();
+ if(!$('view-cards').classList.contains('hidden')&&$('modal').classList.contains('hidden')&&e.target.tagName!=='INPUT'){
+  if(e.key==='ArrowRight'){goCard(1);return}if(e.key==='ArrowLeft'){goCard(-1);return}
+  if((e.key===' '||e.key==='Enter')&&(!e.target.closest('button')||e.target.id==='fc')){e.preventDefault();flipCard();return}}
+ if($('q-play').classList.contains('hidden')||e.target.tagName==='INPUT')return;
  const k='1234'.indexOf(e.key)>=0?'1234'.indexOf(e.key):'abcd'.indexOf(e.key.toLowerCase());
  if(k>=0&&e.key.length===1&&!locked)pick(k);else if(e.key==='Enter'&&locked){e.preventDefault();next()}});
 }
